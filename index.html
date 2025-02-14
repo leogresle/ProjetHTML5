@@ -1,1 +1,38 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier des Événements - Polytech</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Calendrier des Événements - Polytech</h1>
+        <button id="login-btn">Se connecter</button>
+    </header>
+
+    <section id="calendar">
+        <input type="text" id="search-input" placeholder="Rechercher un événement...">
+        <div id="events-container">
+            <!-- Les événements s'affichent ici -->
+        </div>
+    </section>
+
+    <div id="event-form" class="modal">
+        <div class="modal-content">
+            <h2>Ajouter un événement</h2>
+            <form id="add-event-form">
+                <input type="text" id="event-title" placeholder="Titre de l'événement" required>
+                <textarea id="event-description" placeholder="Description" required></textarea>
+                <input type="date" id="event-date" required>
+                <button type="submit">Ajouter</button>
+                <button type="button" id="close-form">Fermer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
