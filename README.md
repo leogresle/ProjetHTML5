@@ -13,4 +13,4 @@ Chaque club pourra se connecter avec un compte (login mdp)  different pour y ajo
 On aura la possibilité de filtrer le calendrier en fonction de nos recherches.
 Chaque event aura sa description date ect...
 
-Pour faire simple, on veut rendre la communication des clubs plus accessible et plus rapide sans avoir besoin de se connecter sur les résaux sociaux.
+Pour faire simple, on veut rendre la communication des clubs plus accessible et plus rapide sans avoir besoin de se connecter sur les réseaux sociaux.
