@@ -1,38 +1,271 @@
+s<!doctype html>
+<html lang="en">
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendrier des Événements - Polytech</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Calendrier des Événements - Polytech</h1>
-        <button id="login-btn">Se connecter</button>
-    </header>
+    <head>
+        <!-- meta data -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        
+        <!-- title of site -->
+        <title>ClubsAngers</title>
 
-    <section id="calendar">
-        <input type="text" id="search-input" placeholder="Rechercher un événement...">
-        <div id="events-container">
-            <!-- Les événements s'affichent ici -->
-        </div>
-    </section>
+        <!-- For favicon png -->
+		<link rel="shortcut icon" type="image/icon" href="assets/logo/p_transparent.png"/>
 
-    <div id="event-form" class="modal">
-        <div class="modal-content">
-            <h2>Ajouter un événement</h2>
-            <form id="add-event-form">
-                <input type="text" id="event-title" placeholder="Titre de l'événement" required>
-                <textarea id="event-description" placeholder="Description" required></textarea>
-                <input type="date" id="event-date" required>
-                <button type="submit">Ajouter</button>
-                <button type="button" id="close-form">Fermer</button>
-            </form>
-        </div>
-    </div>
+		<!--font-awesome.min.css-->
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
-    <script src="scripts.js"></script>
-</body>
+		<!--flat icon css-->
+		<link rel="stylesheet" href="assets/css/flaticon.css">
+
+		<!--animate.css-->
+		<link rel="stylesheet" href="assets/css/animate.css">
+
+		<!--owl.carousel.css-->
+		<link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+		<link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+		
+		<!--bootstrap.min.css-->
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		
+		<!-- bootsnav -->
+		<link rel="stylesheet" href="assets/css/bootsnav.css" >	
+		
+		<!--responsive.css-->
+		<link rel="stylesheet" href="assets/css/responsive.css">
+
+		<!--style.css-->
+		<link rel="stylesheet" href="assets/css/style.css">
+
+
+    </head>
+	
+	<body>
+		<!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+		
+		<!-- top-area Start -->
+	<header class="top-area">
+    		<div class="header-area">
+        		<!-- Start Navigation -->
+        		<nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
+
+            		<div class="container">
+
+                		<!-- Start Header Navigation -->
+                		<div class="navbar-header">
+						    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+						        <i class="fa fa-bars"></i>
+						    </button>
+						    <a class="navbar-brand" href="?a=logout">CONNEXION</a>
+						</div><!--/.navbar-header-->
+
+                		<!-- End Header Navigation -->
+
+                		<!-- Collect the nav links, forms, and other content for toggling -->
+                		<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                    		<ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                        		<li class=" smooth-menu active"></li>
+                        		<li class="smooth-menu"><a href="?a=acceuil">Acceuil</a></li>
+                        		<li class="smooth-menu"><a href="?a=calendrier">Calendrier</a></li>
+								<li class="smooth-menu"><a href="?a=clubs">Clubs</a></li>
+								<li class="smooth-menu"><a href="?a=clubs">News</a></li>
+                    		</ul><!--/.nav -->
+                		</div><!-- /.navbar-collapse -->
+            		</div><!--/.container-->
+        		</nav><!--/nav-->
+        		<!-- End Navigation -->
+    		</div><!--/.header-area-->
+
+    		<div class="clearfix"></div>
+		</header><!-- /.top-area-->
+
+
+		<!-- top-area End -->
+	
+		<!--welcome-hero start -->
+		<section id="welcome-hero" class="welcome-hero">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<div class="header-text">
+							<h2>Les Clubs de <br><span> Polytech Angers </span><br>   </h2>
+							<p>Site de référence des clubs et évènements de Polytech Angers</p>
+							<a href="?a=suggestion">Voir Site Polytech</a>
+						</div><!--/.header-text-->
+					</div><!--/.col-->
+				</div><!-- /.row-->
+			</div><!-- /.container-->
+
+		</section><!--/.welcome-hero-->
+		<!--welcome-hero end -->
+
+		<!--about start -->
+		<section id="about" class="about">
+			<div class="section-heading text-center">
+				<h2>Comment ça marche ?</h2>
+			</div>
+			<div class="container">
+				<div class="about-content">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="single-about-txt">
+								<h3>
+									Les clubs de Polytech Angers permettent d'améliorer la vie étudiante au sein de l'école, en effet graçe à ces clubs les étudiants peuvent apprendre à se connaître et partager leurs passions.
+								</h3>
+								<p>
+									Il vous est possible de créer votre propre club si vous le souhaitez ! Pour cela rien de plus simple, envoyez nous un message en vous servant du form juste en dessous, nous étudirons la demande et vous répondrons aussi vite que possible. Vous pouvez également nous poser des questions si besoin.
+								</p>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="single-about-txt">
+											<p>
+											Vous pouvez également nous retrouver sur nos réseaux sociaux !
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-offset-1 col-sm-5">
+							<div class="single-about-img">
+								<img src="assets/images/image_popo.jpg" alt="profile_image">
+								<div class="about-list-icon">
+									<ul>
+										<li>
+											<a href="#">
+												<i  class="fa fa-facebook" aria-hidden="true"></i>
+											</a>
+										</li><!-- / li -->
+										<li>
+											<a href="#">
+												<i  class="fa fa-dribbble" aria-hidden="true"></i>
+											</a>
+											
+										</li><!-- / li -->
+										<li>
+											<a href="#">
+												<i  class="fa fa-twitter" aria-hidden="true"></i>
+											</a>
+											
+										</li><!-- / li -->
+										<li>
+											<a href="#">
+												<i  class="fa fa-linkedin" aria-hidden="true"></i>
+											</a>
+										</li><!-- / li -->
+										<li>
+											<a href="#">
+												<i  class="fa fa-instagram" aria-hidden="true"></i>
+											</a>
+										</li><!-- / li -->
+									</ul><!-- / ul -->
+								</div><!-- /.about-list-icon -->
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!--/.about-->
+		<!--about end -->
+
+
+		</section><!--/.clients-->
+		<!--clients end -->
+
+		<!--contact start -->
+		<section id="contact" class="contact">
+			<div class="section-heading text-center">
+				<h2>Soumettre une idée</h2>
+			</div>
+			<div class="container">
+				<div class="contact-content">
+					<div class="row">
+						<div class="col-md-offset-1 col-md-5 col-sm-6">
+							<div class="single-contact-box">
+								<div class="contact-form">
+									<form method="post" action="?a=suggest">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="Nom du club*" name="sujet"></input>
+												</div><!--/.form-group-->
+											</div><!--/.col-->
+										</div><!--/.row-->
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group">
+													<textarea class="form-control" rows="8" placeholder="Explication*" name="message" ></textarea>
+												</div><!--/.form-group-->
+											</div><!--/.col-->
+										</div><!--/.row-->
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="single-contact-btn">
+													<button class="contact-btn" type="submit" name="suggest">soumettre</button>
+												</div><!--/.single-single-contact-btn-->
+											</div><!--/.col-->
+										</div><!--/.row-->
+								</div><!--/.contact-form-->
+							</div><!--/.single-contact-box-->
+						</div><!--/.col-->
+						<div class="col-md-offset-1 col-md-5 col-sm-6">
+							<div class="single-contact-box">
+								<div class="contact-adress">
+									<div class="contact-add-head">
+										<h3>AngersClubs</h3>
+										<p>site web des clubs de polytech Angers</p>
+									</div>
+									<div class="contact-add-info">
+										<div class="single-contact-add-info">
+											<h3>Adresse Campus de Belle-Beille</h3>
+											<p>62 avenue Notre-Dame du Lac</p>
+										</div>
+										<div class="single-contact-add-info">
+											<h3>email</h3>
+											<p>bdepolytech.angers@gmail.com</p>
+										</div>
+										<div class="single-contact-add-info">
+											<h3>Site Web Polytech Angers</h3>
+											<p>www.polytech-angers.fr</p>
+										</div>
+									</div>
+								</div><!--/.contact-adress-->
+								<div class="hm-foot-icon">
+									<ul>
+										<li><a href="#"><i class="fa fa-facebook"></i></a></li><!--/li-->
+										<li><a href="#"><i class="fa fa-dribbble"></i></a></li><!--/li-->
+										<li><a href="#"><i class="fa fa-twitter"></i></a></li><!--/li-->
+										<li><a href="#"><i class="fa fa-linkedin"></i></a></li><!--/li-->
+										<li><a href="#"><i class="fa fa-instagram"></i></a></li><!--/li-->
+									</ul><!--/ul-->
+								</div><!--/.hm-foot-icon-->
+							</div><!--/.single-contact-box-->
+						</div><!--/.col-->
+					</div><!--/.row-->
+				</div><!--/.contact-content-->
+			</div><!--/.container-->
+
+		</section><!--/.contact-->
+		<!--contact end -->
+
+		<!--footer-copyright start-->
+		<footer id="footer-copyright" class="footer-copyright">
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" ></i>
+				</div>
+				
+			</div><!--/.scroll-Top-->
+			
+        </footer><!--/.footer-copyright-->
+        
+    </body>
+	
 </html>
