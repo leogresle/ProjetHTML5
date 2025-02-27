@@ -1,71 +1,118 @@
 document.addEventListener('DOMContentLoaded', () => {
     const calendar = document.getElementById('calendar');
+    const monthYear = document.getElementById('month-year');
     const eventForm = document.getElementById('event-form');
     const eventTitle = document.getElementById('event-title');
     const eventDescription = document.getElementById('event-description');
     const eventDatetime = document.getElementById('event-datetime');
     const addEventButton = document.getElementById('add-event');
-
-    // Fonction pour générer le calendrier
-    function generateCalendar() {
-        const daysOfWeek = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth();
-        const currentYear = currentDate.getFullYear();
-        const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-        const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
-        const totalDays = lastDayOfMonth.getDate();
-        const firstDay = firstDayOfMonth.getDay();
-
-        // Afficher les jours de la semaine
-        daysOfWeek.forEach(day => {
-            const dayElement = document.createElement('div');
-            dayElement.textContent = day;
-            calendar.appendChild(dayElement);
+    const closeFormButton = document.getElementById('close-form');
+  
+    let events = [];
+    let selectedDate = null;
+  
+    // Date actuelle pour l'affichage du calendrier
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+  
+    function generateCalendar(month, year) {
+      calendar.innerHTML = '';
+  
+      // Mise à jour de l'en-tête avec le mois et l'année
+      const options = { month: 'long', year: 'numeric' };
+      const dateForHeader = new Date(year, month);
+      monthYear.textContent = dateForHeader.toLocaleDateString('fr-FR', options);
+  
+      // Création des en-têtes de jours (Dim, Lun, Mar, etc.)
+      const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+      dayNames.forEach(dayName => {
+        const dayHeader = document.createElement('div');
+        dayHeader.classList.add('day-header');
+        dayHeader.textContent = dayName;
+        calendar.appendChild(dayHeader);
+      });
+  
+      // Déterminer le jour de la semaine du 1er jour du mois
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+  
+      // Remplir les cases vides avant le premier jour
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.classList.add('day');
+        calendar.appendChild(emptyCell);
+      }
+  
+      // Création des cellules pour chaque jour
+      for (let day = 1; day <= lastDate; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.classList.add('day');
+        dayCell.setAttribute('data-day', day);
+  
+        // Affichage du numéro du jour
+        const dayNumber = document.createElement('div');
+        dayNumber.classList.add('day-number');
+        dayNumber.textContent = day;
+        dayCell.appendChild(dayNumber);
+  
+        // Ajouter les événements s'il y en a pour ce jour
+        const dayEvents = events.filter(ev => {
+          const evDate = new Date(ev.datetime);
+          return evDate.getDate() === day &&
+                 evDate.getMonth() === month &&
+                 evDate.getFullYear() === year;
         });
-
-        // Remplir les cases vides avant le premier jour du mois
-        for (let i = 0; i < firstDay; i++) {
-            const emptyElement = document.createElement('div');
-            calendar.appendChild(emptyElement);
-        }
-
-        // Remplir les jours du mois
-        for (let day = 1; day <= totalDays; day++) {
-            const dayElement = document.createElement('div');
-            dayElement.textContent = day;
-            dayElement.addEventListener('click', () => {
-                // Afficher le formulaire d'événement pour le jour sélectionné
-                eventForm.style.display = 'block';
-                eventDatetime.value = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T00:00`;
-            });
-            calendar.appendChild(dayElement);
-        }
+        dayEvents.forEach(ev => {
+          const eventDiv = document.createElement('div');
+          eventDiv.classList.add('event');
+          // Affichage du titre, de l'heure et de la description
+          const time = ev.datetime.split('T')[1];
+          eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${time}<br>${ev.description}`;
+          dayCell.appendChild(eventDiv);
+        });
+  
+        // Au clic, afficher le formulaire pré-rempli avec la date sélectionnée
+        dayCell.addEventListener('click', (e) => {
+          // Éviter d’ouvrir le formulaire si l’on clique sur un événement
+          if(e.target.classList.contains('event')) return;
+          selectedDate = new Date(year, month, day);
+          const yyyy = selectedDate.getFullYear();
+          const mm = String(selectedDate.getMonth() + 1).padStart(2, '0');
+          const dd = String(selectedDate.getDate()).padStart(2, '0');
+          eventDatetime.value = `${yyyy}-${mm}-${dd}T00:00`;
+          eventForm.style.display = 'block';
+        });
+  
+        calendar.appendChild(dayCell);
+      }
     }
-
-    // Fonction pour ajouter un événement
+  
     function addEvent() {
-        const title = eventTitle.value;
-        const description = eventDescription.value;
-        const datetime = eventDatetime.value;
-
-        if (title && description && datetime) {
-            const event = { title, description, datetime };
-            // Enregistrer l'événement (par exemple, dans le localStorage ou une base de données)
-            console.log('Événement ajouté:', event);
-            // Réinitialiser le formulaire
-            eventTitle.value = '';
-            eventDescription.value = '';
-            eventDatetime.value = '';
-            eventForm.style.display = 'none';
-        } else {
-            alert('Veuillez remplir tous les champs.');
-        }
+      const title = eventTitle.value.trim();
+      const description = eventDescription.value.trim();
+      const datetime = eventDatetime.value;
+  
+      if (title && description && datetime) {
+        events.push({ title, description, datetime });
+        // Régénérer le calendrier pour afficher le nouvel événement
+        generateCalendar(currentMonth, currentYear);
+        // Réinitialiser le formulaire et le masquer
+        eventTitle.value = '';
+        eventDescription.value = '';
+        eventDatetime.value = '';
+        eventForm.style.display = 'none';
+      } else {
+        alert('Veuillez remplir tous les champs.');
+      }
     }
-
-    // Écouter le clic sur le bouton d'ajout d'événement
+  
     addEventButton.addEventListener('click', addEvent);
-
-    // Générer le calendrier au chargement de la page
-    generateCalendar();
-});
+    closeFormButton.addEventListener('click', () => {
+      eventForm.style.display = 'none';
+    });
+  
+    // Générer le calendrier lors du chargement de la page
+    generateCalendar(currentMonth, currentYear);
+  });
+  
