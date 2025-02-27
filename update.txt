@@ -1,0 +1,9 @@
+update à faire si on est en avance : 
+  - super admin crée un club avec l'adresse mail uniquement -> un mail est envoyé à l'adresse mail du club qui crée son mdp lui même
+  - Le club peut choisir sa couleur ( avec une roue de couleur)
+
+
+update à faire :
+  - php pour récupérer les données js du calendrier
+  - le super admin choisit la couleur pour le club -> couleur stockée en base de donnée
+  
