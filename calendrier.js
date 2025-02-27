@@ -116,3 +116,4 @@ document.addEventListener('DOMContentLoaded', () => {
     generateCalendar(currentMonth, currentYear);
   });
   
+  //maj
