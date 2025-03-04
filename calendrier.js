@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const eventDatetime = document.getElementById('event-datetime');
   const addEventButton = document.getElementById('add-event');
   const closeFormButton = document.getElementById('close-form');
+  // pour ajouter les boutons pour changer les mois
+  const prevMonthButton = document.getElementById('prev-month');
+  const nextMonthButton = document.getElementById('next-month');
 
   let events = [];
 
@@ -15,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentMonth = today.getMonth();
   let currentYear = today.getFullYear();
 
-  // Génération du calendrier pour le mois et l'année donnés
+  // Fonction pour générer le calendrier
   function generateCalendar(month, year) {
     calendar.innerHTML = '';
 
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       calendar.appendChild(dayHeader);
     });
 
-    // Calcul du jour de la semaine du 1er jour du mois et du nombre de jours dans le mois
+    // Calcul du premier jour du mois et du nombre de jours dans le mois
     const firstDay = new Date(year, month, 1).getDay();
     const lastDate = new Date(year, month + 1, 0).getDate();
 
@@ -72,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dayCell.appendChild(eventDiv);
       });
 
-      // Au clic sur une cellule (en évitant les clics sur un événement déjà affiché), afficher le formulaire pré-rempli avec la date sélectionnée
+      // Au clic sur une cellule, afficher le formulaire pré-rempli avec la date sélectionnée
       dayCell.addEventListener('click', (e) => {
         if(e.target.classList.contains('event')) return;
         const selectedDate = new Date(year, month, day);
@@ -110,6 +113,28 @@ document.addEventListener('DOMContentLoaded', () => {
   closeFormButton.addEventListener('click', () => {
     eventForm.style.display = 'none';
   });
+
+  // Fonction pour changer de mois
+  function changeMonth(offset) {
+    currentMonth += offset;
+
+    // Si on dépasse décembre, passer à janvier de l'année suivante
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+
+    // Si on passe sous janvier, revenir à décembre de l'année précédente
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+
+    generateCalendar(currentMonth, currentYear);
+  }
+
+  prevMonthButton.addEventListener('click', () => changeMonth(-1)); // Mois précédent
+  nextMonthButton.addEventListener('click', () => changeMonth(1)); // Mois suivant
 
   // Générer le calendrier au chargement de la page
   generateCalendar(currentMonth, currentYear);
