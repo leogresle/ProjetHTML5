@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Calendrier d'Événements</title>
+  <!-- Import du fichier CSS externe -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
+    <!-- En-tête du calendrier -->
     <div id="calendar-header">
-      <h2 id="month-year"></h2>
+      <h2 id="month-year">Mois et Année</h2>
     </div>
-    <div id="calendar"></div>
+    <!-- Conteneur du calendrier -->
+    <div id="calendar">
+      <!-- Les en-têtes et jours seront générés par JS -->
+    </div>
+    <!-- Formulaire d'ajout d'événement -->
     <div id="event-form">
       <h3>Ajouter un Événement</h3>
       <input type="text" id="event-title" placeholder="Titre de l'événement">
@@ -20,6 +26,7 @@
       <button id="close-form">Fermer</button>
     </div>
   </div>
-  <script src="script.js"></script>
+  <!-- Import du fichier JS externe -->
+  <script src="calendrier.js"></script>
 </body>
 </html>
