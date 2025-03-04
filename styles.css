@@ -13,17 +13,45 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
 }
-/* En-tête du calendrier */
+
+/* En-tête du calendrier avec flexbox */
 #calendar-header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
+
+#calendar-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+#prev-month, #next-month {
+  padding: 8px 12px;
+  font-size: 1em;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#prev-month {
+  background-color: #4b4848;
+}
+
+#next-month {
+  background-color: #4b4848;
+}
+
 /* Grille du calendrier */
 #calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
 }
+
 .day, .day-header {
   border: 1px solid #ddd;
   padding: 10px;
@@ -32,11 +60,13 @@ body {
   border-radius: 4px;
   background: #fafafa;
 }
+
 .day-header {
   background: #f0f0f0;
   font-weight: bold;
   text-align: center;
 }
+
 .day-number {
   position: absolute;
   top: 5px;
@@ -44,6 +74,7 @@ body {
   font-size: 12px;
   color: #666;
 }
+
 /* Style de l'événement (fond rose pâle) */
 .event {
   background: #ffe6f2;
@@ -53,6 +84,7 @@ body {
   font-size: 12px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+
 /* Formulaire d'ajout d'événement */
 #event-form {
   display: none;
@@ -62,6 +94,7 @@ body {
   border-radius: 8px;
   background: #fff;
 }
+
 #event-form input, #event-form textarea {
   width: 100%;
   padding: 8px;
@@ -69,6 +102,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 #event-form button {
   padding: 10px 15px;
   border: none;
@@ -77,6 +111,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
+
 #event-form button#close-form {
   background: #dc3545;
   margin-left: 10px;
