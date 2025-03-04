@@ -1,60 +1,37 @@
-const events = [];
-const eventFormModal = document.getElementById('event-form');
-const eventsContainer = document.getElementById('events-container');
-const searchInput = document.getElementById('search-input');
-const addEventForm = document.getElementById('add-event-form');
-const closeFormBtn = document.getElementById('close-form');
-const loginBtn = document.getElementById('login-btn');
+document.getElementById('signup-form').addEventListener('submit', function (event) {
+    event.preventDefault();
 
-// Afficher ou masquer le formulaire d'ajout d'événement
-loginBtn.addEventListener('click', () => {
-    // Simulation de connexion (à adapter pour authentification réelle)
-    alert('Vous êtes connecté en tant que Club!');
-    eventFormModal.style.display = 'flex';
-});
+    // Récupérer les données du formulaire
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-closeFormBtn.addEventListener('click', () => {
-    eventFormModal.style.display = 'none';
-});
+    // Créer l'objet de données à envoyer
+    const data = {
+        username: username,
+        email: email,
+        password: password
+    };
 
-// Ajouter un événement
-addEventForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const title = document.getElementById('event-title').value;
-    const description = document.getElementById('event-description').value;
-    const date = document.getElementById('event-date').value;
-
-    if (title && description && date) {
-        const event = {
-            title,
-            description,
-            date
-        };
-        events.push(event);
-        displayEvents();
-        eventFormModal.style.display = 'none';
-    } else {
-        alert('Veuillez remplir tous les champs.');
-    }
-});
-
-// Afficher les événements
-function displayEvents() {
-    eventsContainer.innerHTML = '';
-    const filteredEvents = events.filter(event => event.title.toLowerCase().includes(searchInput.value.toLowerCase()));
-
-    filteredEvents.forEach(event => {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('event');
-        eventDiv.innerHTML = `
-            <h3>${event.title}</h3>
-            <p>${event.description}</p>
-            <p><strong>Date:</strong> ${event.date}</p>
-        `;
-        eventsContainer.appendChild(eventDiv);
+    // Envoyer les données via fetch (requête POST)
+    fetch('http://localhost:3000/api/inscription', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'Inscription réussie.') {
+            alert('Inscription réussie !');
+            // Rediriger ou afficher un message de succès
+        } else {
+            document.getElementById('error-message').textContent = data.message;
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        document.getElementById('error-message').textContent = 'Erreur de communication avec le serveur.';
     });
-}
-
-// Filtrer les événements par recherche
-searchInput.addEventListener('input', displayEvents);
+});

@@ -1,0 +1,26 @@
+{
+  "name": "ProjetHTML5-2",
+  "version": "1.0.0",
+  "description": "Contexte :",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leogresle/ProjetHTML5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leogresle/ProjetHTML5/issues"
+  },
+  "homepage": "https://github.com/leogresle/ProjetHTML5#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
+  }
+}
