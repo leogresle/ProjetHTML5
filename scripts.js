@@ -11,6 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let events = JSON.parse(localStorage.getItem('events')) || [];
 
+    // Si c'est le formulaire d'ajout d'événement, on gère la soumission du formulaire
+    if (addEventButton) {
+        addEventButton.addEventListener('click', () => {
+            const title = eventTitle.value.trim();
+            const description = eventDescription.value.trim();
+            const datetime = eventDatetime.value;
+
+            if (title && description && datetime) {
+                // Ajout de l'événement dans le localStorage
+                events.push({ title, description, datetime });
+                localStorage.setItem('events', JSON.stringify(events));
+
+                // Redirection vers le fichier calendar.html dans le dossier Clender
+                window.location.href = 'Calendier.html';  // Assurez-vous que ce chemin est correct !
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+    }
+
+    // Code pour gérer l'affichage du calendrier (inchangé)
     const today = new Date();
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
@@ -95,23 +116,5 @@ document.addEventListener('DOMContentLoaded', () => {
     prevMonthButton.addEventListener('click', () => changeMonth(-1));
     nextMonthButton.addEventListener('click', () => changeMonth(1));
 
-    // Fonction pour ajouter un événement
-    if (addEventButton) {
-        addEventButton.addEventListener('click', () => {
-            const title = eventTitle.value.trim();
-            const description = eventDescription.value.trim();
-            const datetime = eventDatetime.value;
-
-            if (title && description && datetime) {
-                events.push({ title, description, datetime });
-                localStorage.setItem('events', JSON.stringify(events));
-                window.location.href = 'calendar.html';  // Rediriger vers le calendrier
-            } else {
-                alert('Veuillez remplir tous les champs.');
-            }
-        });
-    }
-
-    // Initialisation du calendrier
     generateCalendar(currentMonth, currentYear);
 });
