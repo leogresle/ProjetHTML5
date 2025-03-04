@@ -1,60 +1,24 @@
-const events = [];
-const eventFormModal = document.getElementById('event-form');
-const eventsContainer = document.getElementById('events-container');
-const searchInput = document.getElementById('search-input');
-const addEventForm = document.getElementById('add-event-form');
-const closeFormBtn = document.getElementById('close-form');
-const loginBtn = document.getElementById('login-btn');
+document.addEventListener("DOMContentLoaded", function() {
+    // Cibler le lien Calendrier
+    document.getElementById("calendrier-link").addEventListener("click", function(event) {
+        event.preventDefault(); // Empêche la navigation vers l'URL
 
-// Afficher ou masquer le formulaire d'ajout d'événement
-loginBtn.addEventListener('click', () => {
-    // Simulation de connexion (à adapter pour authentification réelle)
-    alert('Vous êtes connecté en tant que Club!');
-    eventFormModal.style.display = 'flex';
-});
-
-closeFormBtn.addEventListener('click', () => {
-    eventFormModal.style.display = 'none';
-});
-
-// Ajouter un événement
-addEventForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const title = document.getElementById('event-title').value;
-    const description = document.getElementById('event-description').value;
-    const date = document.getElementById('event-date').value;
-
-    if (title && description && date) {
-        const event = {
-            title,
-            description,
-            date
-        };
-        events.push(event);
-        displayEvents();
-        eventFormModal.style.display = 'none';
-    } else {
-        alert('Veuillez remplir tous les champs.');
-    }
-});
-
-// Afficher les événements
-function displayEvents() {
-    eventsContainer.innerHTML = '';
-    const filteredEvents = events.filter(event => event.title.toLowerCase().includes(searchInput.value.toLowerCase()));
-
-    filteredEvents.forEach(event => {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('event');
-        eventDiv.innerHTML = `
-            <h3>${event.title}</h3>
-            <p>${event.description}</p>
-            <p><strong>Date:</strong> ${event.date}</p>
+        // Modifier le contenu de la section #welcome-hero
+        const welcomeHero = document.getElementById("welcome-hero");
+        alert("test");
+        // Nouveau contenu à injecter dans la section
+        welcomeHero.innerHTML = `
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="header-text">
+                            <h2>Calendrier des événements</h2>
+                            <p>Aucun événement prévu pour le moment.</p>
+                            <a href="?a=acceuil">Retour à l'accueil</a>
+                        </div><!--/.header-text-->
+                    </div><!--/.col-->
+                </div><!-- /.row-->
+            </div><!-- /.container-->
         `;
-        eventsContainer.appendChild(eventDiv);
     });
-}
-
-// Filtrer les événements par recherche
-searchInput.addEventListener('input', displayEvents);
+});
