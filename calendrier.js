@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const eventDatetime = document.getElementById('event-datetime');
   const addEventButton = document.getElementById('add-event');
   const closeFormButton = document.getElementById('close-form');
+  
   // pour ajouter les boutons pour changer les mois
   const prevMonthButton = document.getElementById('prev-month');
   const nextMonthButton = document.getElementById('next-month');
 
-  let events = [];
+  // Récupérer les événements depuis localStorage (s'il y en a)
+  let events = JSON.parse(localStorage.getItem('events')) || [];
 
   // Date actuelle pour l'affichage du calendrier
   const today = new Date();
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fonction pour générer le calendrier
   function generateCalendar(month, year) {
-    calendar.innerHTML = '';
+    calendar.innerHTML = '';  // Réinitialiser le calendrier
 
     // Affichage de l'en-tête (mois et année)
     const options = { month: 'long', year: 'numeric' };
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dayNumber.textContent = day;
       dayCell.appendChild(dayNumber);
 
-      // Ajout des événements pour ce jour, s'il y en a
+      // Ajout des événements pour ce jour
       const dayEvents = events.filter(ev => {
         const evDate = new Date(ev.datetime);
         return evDate.getDate() === day &&
@@ -69,13 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
       dayEvents.forEach(ev => {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
-        // Affichage du titre, de l'heure et de la description
         const time = ev.datetime.split('T')[1];
         eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${time}<br>${ev.description}`;
         dayCell.appendChild(eventDiv);
       });
 
-      // Au clic sur une cellule, afficher le formulaire pré-rempli avec la date sélectionnée
+      // Ajouter un événement au clic
       dayCell.addEventListener('click', (e) => {
         if(e.target.classList.contains('event')) return;
         const selectedDate = new Date(year, month, day);
@@ -97,8 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const datetime = eventDatetime.value;
 
     if (title && description && datetime) {
-      events.push({ title, description, datetime });
+      // Créer un objet événement
+      const newEvent = { title, description, datetime };
+      
+      // Ajouter l'événement au tableau d'événements
+      events.push(newEvent);
+
+      // Sauvegarder les événements dans localStorage
+      localStorage.setItem('events', JSON.stringify(events));
+
+      // Générer à nouveau le calendrier avec les nouveaux événements
       generateCalendar(currentMonth, currentYear);
+
       // Réinitialiser et masquer le formulaire
       eventTitle.value = '';
       eventDescription.value = '';
@@ -139,3 +150,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Générer le calendrier au chargement de la page
   generateCalendar(currentMonth, currentYear);
 });
+  
