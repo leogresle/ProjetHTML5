@@ -1,60 +1,117 @@
-const events = [];
-const eventFormModal = document.getElementById('event-form');
-const eventsContainer = document.getElementById('events-container');
-const searchInput = document.getElementById('search-input');
-const addEventForm = document.getElementById('add-event-form');
-const closeFormBtn = document.getElementById('close-form');
-const loginBtn = document.getElementById('login-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    const calendar = document.getElementById('calendar');
+    const monthYear = document.getElementById('month-year');
+    const prevMonthButton = document.getElementById('prev-month');
+    const nextMonthButton = document.getElementById('next-month');
+    const eventTitle = document.getElementById('event-title');
+    const eventDescription = document.getElementById('event-description');
+    const eventDatetime = document.getElementById('event-datetime');
+    const addEventButton = document.getElementById('add-event');
+    const closeFormButton = document.getElementById('close-form');
 
-// Afficher ou masquer le formulaire d'ajout d'événement
-loginBtn.addEventListener('click', () => {
-    // Simulation de connexion (à adapter pour authentification réelle)
-    alert('Vous êtes connecté en tant que Club!');
-    eventFormModal.style.display = 'flex';
-});
+    let events = JSON.parse(localStorage.getItem('events')) || [];
 
-closeFormBtn.addEventListener('click', () => {
-    eventFormModal.style.display = 'none';
-});
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
 
-// Ajouter un événement
-addEventForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+    // Fonction pour générer le calendrier
+    function generateCalendar(month, year) {
+        calendar.innerHTML = '';
 
-    const title = document.getElementById('event-title').value;
-    const description = document.getElementById('event-description').value;
-    const date = document.getElementById('event-date').value;
+        // Affichage de l'en-tête (mois et année)
+        const options = { month: 'long', year: 'numeric' };
+        const dateForHeader = new Date(year, month);
+        monthYear.textContent = dateForHeader.toLocaleDateString('fr-FR', options);
 
-    if (title && description && date) {
-        const event = {
-            title,
-            description,
-            date
-        };
-        events.push(event);
-        displayEvents();
-        eventFormModal.style.display = 'none';
-    } else {
-        alert('Veuillez remplir tous les champs.');
+        // Création des en-têtes de jours (Dim, Lun, Mar, ...)
+        const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+        dayNames.forEach(dayName => {
+            const dayHeader = document.createElement('div');
+            dayHeader.classList.add('day-header');
+            dayHeader.textContent = dayName;
+            calendar.appendChild(dayHeader);
+        });
+
+        // Calcul du premier jour du mois et du nombre de jours dans le mois
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        // Cases vides avant le premier jour du mois
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.classList.add('day');
+            calendar.appendChild(emptyCell);
+        }
+
+        // Création des cellules pour chaque jour
+        for (let day = 1; day <= lastDate; day++) {
+            const dayCell = document.createElement('div');
+            dayCell.classList.add('day');
+            dayCell.setAttribute('data-day', day);
+
+            // Affichage du numéro du jour
+            const dayNumber = document.createElement('div');
+            dayNumber.classList.add('day-number');
+            dayNumber.textContent = day;
+            dayCell.appendChild(dayNumber);
+
+            // Ajout des événements pour ce jour, s'il y en a
+            const dayEvents = events.filter(ev => {
+                const evDate = new Date(ev.datetime);
+                return evDate.getDate() === day &&
+                    evDate.getMonth() === month &&
+                    evDate.getFullYear() === year;
+            });
+            dayEvents.forEach(ev => {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event');
+                const time = ev.datetime.split('T')[1];
+                eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${time}<br>${ev.description}`;
+                dayCell.appendChild(eventDiv);
+            });
+
+            calendar.appendChild(dayCell);
+        }
     }
+
+    // Fonction pour changer de mois
+    function changeMonth(offset) {
+        currentMonth += offset;
+
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+
+        generateCalendar(currentMonth, currentYear);
+    }
+
+    prevMonthButton.addEventListener('click', () => changeMonth(-1));
+    nextMonthButton.addEventListener('click', () => changeMonth(1));
+
+    // Fonction pour ajouter un événement
+    if (addEventButton) {
+        addEventButton.addEventListener('click', () => {
+            const title = eventTitle.value.trim();
+            const description = eventDescription.value.trim();
+            const datetime = eventDatetime.value;
+
+            if (title && description && datetime) {
+                events.push({ title, description, datetime });
+                localStorage.setItem('events', JSON.stringify(events));
+                window.location.href = 'calendar.html';  // Rediriger vers le calendrier
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        });
+    }
+
+    // Initialisation du calendrier
+    generateCalendar(currentMonth, currentYear);
 });
-
-// Afficher les événements
-function displayEvents() {
-    eventsContainer.innerHTML = '';
-    const filteredEvents = events.filter(event => event.title.toLowerCase().includes(searchInput.value.toLowerCase()));
-
-    filteredEvents.forEach(event => {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('event');
-        eventDiv.innerHTML = `
-            <h3>${event.title}</h3>
-            <p>${event.description}</p>
-            <p><strong>Date:</strong> ${event.date}</p>
-        `;
-        eventsContainer.appendChild(eventDiv);
-    });
-}
-
-// Filtrer les événements par recherche
-searchInput.addEventListener('input', displayEvents);

@@ -1,82 +1,119 @@
+/* Styles de base */
 body {
     font-family: Arial, sans-serif;
+    background: #f4f4f4;
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-header {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
-}
-
-#calendar {
     padding: 20px;
 }
 
-#search-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
-#events-container {
+/* En-tête du calendrier avec flexbox */
+#calendar-header {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.event {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 5px;
+#calendar-header h2 {
+    margin: 0;
+    font-size: 1.5em;
 }
 
-button {
-    padding: 10px;
+#prev-month, #next-month {
+    padding: 8px 12px;
+    font-size: 1em;
     background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #0056b3;
+#prev-month {
+    background-color: #4b4848;
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
+#next-month {
+    background-color: #4b4848;
 }
 
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 300px;
+/* Grille du calendrier */
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
 }
 
-input[type="text"], input[type="date"], textarea {
-    width: 100%;
+.day, .day-header {
+    border: 1px solid #ddd;
     padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    min-height: 80px;
+    position: relative;
+    border-radius: 4px;
+    background: #fafafa;
 }
 
-textarea {
-    height: 100px;
+.day-header {
+    background: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+}
+
+.day-number {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Style de l'événement (fond rose pâle) */
+.event {
+    background: #ffe6f2;
+    padding: 4px;
+    margin-top: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Formulaire d'ajout d'événement */
+#event-form {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+}
+
+#event-form input, #event-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#event-form button {
+    padding: 10px 15px;
+    border: none;
+    background: #007BFF;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#event-form button#close-form {
+    background: #dc3545;
+    margin-left: 10px;
 }
