@@ -2,15 +2,14 @@ const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // Créer une instance d'Express
 const app = express();
 const port = 3000;
 
-const cors = require('cors');
-app.use(cors());
-
 // Middleware pour parser les données JSON
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -68,12 +67,44 @@ app.post('/api/inscription', (req, res) => {
     });
 });
 
+// Route pour la connexion
+app.post('/api/connexion', (req, res) => {
+    const { email, password } = req.body;
+
+    // Vérifier que l'email et le mot de passe sont fournis
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Veuillez fournir un email et un mot de passe.' });
+    }
+
+    // Rechercher l'utilisateur dans la base de données
+    const query = 'SELECT * FROM users WHERE email = ?';
+    db.execute(query, [email], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur de communication avec la base de données.' });
+        }
+
+        if (results.length === 0) {
+            return res.status(400).json({ message: 'Utilisateur non trouvé.' });
+        }
+
+        // Vérifier le mot de passe
+        bcrypt.compare(password, results[0].password, (err, isMatch) => {
+            if (err) {
+                return res.status(500).json({ message: 'Erreur lors de la vérification du mot de passe.' });
+            }
+
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Mot de passe incorrect.' });
+            }
+
+            // Connexion réussie
+            res.status(200).json({ message: 'Connexion réussie.' });
+        });
+    });
+});
+
+
 // Démarrer le serveur
 app.listen(port, () => {
     console.log(`Serveur en écoute sur http://localhost:${port}`);
-});
-
-app.use((req, res, next) => {
-    console.log(`Requête reçue : ${req.method} ${req.url}`);
-    next();
 });
