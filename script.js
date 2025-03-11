@@ -5,14 +5,18 @@ function clearSections() {
     document.getElementById('contact').innerHTML = '';
 }
 
-// Fonction pour charger le contenu dynamique
 function loadCalendrier() {
     // Vider les sections avant de charger le nouveau contenu
     clearSections();
 
     // Charger le contenu de calendrier.html
-    fetch('pages/calendrier.html')
-        .then(response => response.text())  // Convertir le fichier en texte
+    fetch('http://localhost:3000/calendrier.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur de chargement du fichier calendrier.html');
+            }
+            return response.text();  // Convertir le fichier en texte
+        })
         .then(html => {
             // Créer un élément temporaire pour analyser le HTML
             const tempDiv = document.createElement('div');
@@ -37,6 +41,7 @@ function loadCalendrier() {
             console.error('Erreur lors du chargement du fichier calendrier.html:', err);
         });
 }
+
 
 // Ajouter l'écouteur d'événements pour le lien Calendrier
 document.addEventListener('DOMContentLoaded', function () {
