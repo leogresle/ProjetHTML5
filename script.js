@@ -1,50 +1,50 @@
-// Fonction pour vider le contenu des sections
+// Fonction pour vider les sections
 function clearSections() {
-    // Vider les sections en mettant leur contenu à vide
     document.getElementById('welcome-hero').innerHTML = '';
     document.getElementById('about').innerHTML = '';
     document.getElementById('contact').innerHTML = '';
 }
 
-// Fonction pour charger le contenu dynamique (exemple avec du contenu vide pour l'instant)
+// Fonction pour charger le contenu dynamique
 function loadCalendrier() {
-    // Vider les sections d'abord
+    // Vider les sections avant de charger le nouveau contenu
     clearSections();
-    
-    // Créer un nouvel élément à insérer dans chaque section si nécessaire (pour l'instant vide)
-    const emptyContent = '<p>Contenu vide pour cette section.</p>';
-    
-    // Insérer le contenu vide dans chaque section
-    document.getElementById('welcome-hero').innerHTML = emptyContent;
-    document.getElementById('about').innerHTML = emptyContent;
-    document.getElementById('contact').innerHTML = emptyContent;
+
+    // Charger le contenu de calendrier.html
+    fetch('pages/calendrier.html')
+        .then(response => response.text())  // Convertir le fichier en texte
+        .then(html => {
+            // Créer un élément temporaire pour analyser le HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // Extraire et insérer les sections
+            const welcomeHero = tempDiv.querySelector('#welcome-hero');
+            const about = tempDiv.querySelector('#about');
+            const contact = tempDiv.querySelector('#contact');
+
+            if (welcomeHero) {
+                document.getElementById('welcome-hero').innerHTML = welcomeHero.innerHTML;
+            }
+            if (about) {
+                document.getElementById('about').innerHTML = about.innerHTML;
+            }
+            if (contact) {
+                document.getElementById('contact').innerHTML = contact.innerHTML;
+            }
+        })
+        .catch(err => {
+            console.error('Erreur lors du chargement du fichier calendrier.html:', err);
+        });
 }
 
-// Ajouter l'écouteur d'événements sur le lien Calendrier
+// Ajouter l'écouteur d'événements pour le lien Calendrier
 document.addEventListener('DOMContentLoaded', function () {
     const calendrierLink = document.querySelector('a[href="?a=calendrier"]');
     if (calendrierLink) {
         calendrierLink.addEventListener('click', function (e) {
-            e.preventDefault();  // Empêche le comportement par défaut du lien
-            console.log("Lien Calendrier cliqué");
-            loadCalendrier();    // Appelle la fonction pour vider les sections
-        });
-    }
-    const testButton = document.getElementById('testButton');
-    if (testButton) {
-        testButton.addEventListener('click', function () {
-            alert("Button clicked");
+            e.preventDefault();  // Empêcher le comportement par défaut du lien
+            loadCalendrier();    // Charger le calendrier lorsqu'on clique
         });
     }
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-    const testButton = document.getElementById('testButton');
-    if (testButton) {
-        testButton.addEventListener('click', function () {
-            alert("Button clicked");
-        });
-    }
-});
-
-
