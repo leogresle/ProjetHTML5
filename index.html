@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,23 +19,29 @@
         </div>
     </section>
 
-    <section>
-        <a href="inscription.php">Inscription</a><br>
-        <a href="connexion.php">Connexion</a>
-    </section>
+    <section id="registration">
+        <h2>Inscription</h2>
+        
+        <!-- Message d'erreur ou de succès -->
+        <p id="error-message" style="color: red;"></p>
+        <p id="success-message" style="color: green;"></p>
 
-    <div id="event-form" class="modal">
-        <div class="modal-content">
-            <h2>Ajouter un événement</h2>
-            <form id="add-event-form">
-                <input type="text" id="event-title" placeholder="Titre de l'événement" required>
-                <textarea id="event-description" placeholder="Description" required></textarea>
-                <input type="date" id="event-date" required>
-                <button type="submit">Ajouter</button>
-                <button type="button" id="close-form">Fermer</button>
-            </form>
-        </div>
-    </div>
+        <!-- Formulaire d'inscription -->
+        <form id="signup-form">
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" id="username" name="username" required><br><br>
+            
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" required><br><br>
+            
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required><br><br>
+            
+            <button type="submit">S'inscrire</button>
+        </form>
+
+        <p>Vous avez déjà un compte ? <a href="connexion.html">Se connecter</a></p>
+    </section>
 
     <script src="scripts.js"></script>
 </body>

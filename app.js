@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
+const cors = require('cors');
+app.use(cors());
+
 // Middleware pour parser les données JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,7 +19,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'db'
+    database: 'database'
 });
 
 db.connect((err) => {
@@ -37,7 +40,7 @@ app.post('/api/inscription', (req, res) => {
     }
 
     // Vérifier si l'utilisateur existe déjà
-    const query = 'SELECT * FROM user WHERE username = ? OR email = ?';
+    const query = 'SELECT * FROM users WHERE username = ? OR email = ?';
     db.execute(query, [username, email], (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Erreur lors de la vérification de l\'utilisateur.' });
@@ -54,7 +57,7 @@ app.post('/api/inscription', (req, res) => {
             }
 
             // Insérer l'utilisateur dans la base de données
-            const insertQuery = 'INSERT INTO user (username, password, email) VALUES (?, ?, ?)';
+            const insertQuery = 'INSERT INTO users (username, password, email) VALUES (?, ?, ?)';
             db.execute(insertQuery, [username, hashedPassword, email], (err) => {
                 if (err) {
                     return res.status(500).json({ message: 'Erreur lors de l\'inscription.' });
@@ -68,4 +71,9 @@ app.post('/api/inscription', (req, res) => {
 // Démarrer le serveur
 app.listen(port, () => {
     console.log(`Serveur en écoute sur http://localhost:${port}`);
+});
+
+app.use((req, res, next) => {
+    console.log(`Requête reçue : ${req.method} ${req.url}`);
+    next();
 });
