@@ -1,5 +1,8 @@
 dépendance : 
 
-Express : pour gérer le serveur web.
+Express : pour gérer le serveur web. 
 MySQL2 : pour interagir avec la base de données MySQL.
 Bcryptjs : pour hacher les mots de passe (comme dans ton code PHP).
+Cors : gère les accès aux ressources depuis des origines différentes
+
+Pour les installer : npm install nom_du_module
