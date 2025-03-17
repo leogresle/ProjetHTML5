@@ -4,39 +4,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventDatetime = document.getElementById('event-datetime');
     const addEventButton = document.getElementById('add-event');
 
-    // Vérifier si des événements existent déjà dans localStorage
-    let events = JSON.parse(localStorage.getItem('events')) || [];
-
-    // Fonction pour ajouter un événement
     if (addEventButton) {
-        addEventButton.addEventListener('click', () => {
+        addEventButton.addEventListener('click', async () => {
             const title = eventTitle.value.trim();
             const description = eventDescription.value.trim();
             const datetime = eventDatetime.value;
 
             if (title && description && datetime) {
-                // Créer un nouvel événement
-                const newEvent = {
-                    title,
-                    description,
-                    datetime
-                };
+                const newEvent = { title, description, datetime };
 
-                // Ajouter l'événement au tableau d'événements
-                events.push(newEvent);
+                try {
+                    const response = await fetch('/api/events', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newEvent)
+                    });
 
-                // Sauvegarder les événements dans localStorage
-                localStorage.setItem('events', JSON.stringify(events));
+                    if (!response.ok) throw new Error("Erreur lors de l'ajout de l'événement");
 
-                // Réinitialiser les champs du formulaire
-                eventTitle.value = '';
-                eventDescription.value = '';
-                eventDatetime.value = '';
+                    alert(" Événement ajouté !");
+                    ///window.location.href = 'Calendier.html'; // Redirection après ajout
+                    window.location.href = '/accueil';
 
-                // Rediriger vers le calendrier
-                window.location.href = 'Calendier.html';  // Rediriger vers le calendrier
+
+
+
+                } catch (error) {
+                    console.error(error);
+                    alert(" Impossible d'ajouter l'événement.");
+                }
             } else {
-                alert('Veuillez remplir tous les champs.');
+                alert(' Veuillez remplir tous les champs.');
             }
         });
     }
