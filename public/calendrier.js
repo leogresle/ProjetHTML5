@@ -22,10 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function generateCalendar(month, year) {
     calendar.innerHTML = '';
-
+  
     const options = { month: 'long', year: 'numeric' };
     monthYear.textContent = new Date(year, month).toLocaleDateString('fr-FR', options);
-
+  
     const dayNames = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']; // Lundi en premier
     dayNames.forEach(dayName => {
       const dayHeader = document.createElement('div');
@@ -33,45 +33,74 @@ document.addEventListener('DOMContentLoaded', () => {
       dayHeader.textContent = dayName;
       calendar.appendChild(dayHeader);
     });
-
+  
     const events = await fetchEvents();
-
+  
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Décalage pour commencer lundi
     const lastDate = new Date(year, month + 1, 0).getDate();
-
+  
     for (let i = 0; i < firstDay; i++) {
       const emptyCell = document.createElement('div');
       emptyCell.classList.add('day');
       calendar.appendChild(emptyCell);
     }
-
+  
     for (let day = 1; day <= lastDate; day++) {
       const dayCell = document.createElement('div');
       dayCell.classList.add('day');
       dayCell.setAttribute('data-day', day);
-
+  
       const dayNumber = document.createElement('div');
       dayNumber.classList.add('day-number');
       dayNumber.textContent = day;
       dayCell.appendChild(dayNumber);
-
-      const dayEvents = events.filter(ev => {
-        const evDate = new Date(ev.date);
-        return evDate.getDate() === day && evDate.getMonth() === month && evDate.getFullYear() === year;
-      });
-
-      dayEvents.forEach(ev => {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('event');
-
-        const eventTime = new Date(ev.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-        eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${eventTime}<br>${ev.description}`;
-        dayCell.appendChild(eventDiv);
-      });
-
+  
+      const dayEvents = events
+        .filter(ev => {
+          const evDate = new Date(ev.date);
+          return evDate.getDate() === day && evDate.getMonth() === month && evDate.getFullYear() === year;
+        })
+        .sort((a, b) => new Date(a.date) - new Date(b.date)); // Trier par heure de début
+        
+        dayEvents.forEach(ev => {
+          const eventDiv = document.createElement('div');
+          eventDiv.classList.add('event');
+          eventDiv.setAttribute('data-event-id', ev.id);
+          eventDiv.style.backgroundColor = ev.color; // Appliquer la couleur de l'événement
+        
+          const eventTime = new Date(ev.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+          eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${eventTime}<br>${ev.description}`;
+          dayCell.appendChild(eventDiv);
+        
+          eventDiv.addEventListener('click', () => openEventModal(ev));
+        });
+  
       calendar.appendChild(dayCell);
     }
   }
+  
+
+  function openEventModal(event) {
+    document.getElementById('eventTitle').innerText = event.title;
+    document.getElementById('eventClub').innerText = event.club_name;
+    document.getElementById('eventDate').innerText = new Date(event.date).toLocaleDateString('fr-FR');
+    document.getElementById('eventLocation').innerText = event.location;
+    document.getElementById('eventDescription').innerText = event.description;
+    document.getElementById('eventModal').style.display = 'block';
+  }
+
+  function closeEventModal() {
+    document.getElementById('eventModal').style.display = 'none';
+  }
+
+  document.querySelector('.close').addEventListener('click', closeEventModal);
+
+  window.addEventListener('click', (event) => {
+    if (event.target == document.getElementById('eventModal')) {
+      closeEventModal();
+    }
+  });
+
 
   function changeMonth(offset) {
     currentMonth += offset;

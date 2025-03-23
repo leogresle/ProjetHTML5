@@ -70,7 +70,7 @@ app.post('/api/events', (req, res) => {
 
 // Lancement du serveur sur le port 8000
 app.listen(8000, () => {
-  console.log("🚀 Serveur démarré sur http://localhost:8080");
+  console.log(" Serveur démarré sur http://localhost:8080");
 });
 
 
