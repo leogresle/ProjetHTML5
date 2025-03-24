@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentMonth = today.getMonth();
   let currentYear = today.getFullYear();
 
-  async function fetchEvents() {
+  async function fetchEventsWithColors() {
     try {
-      const response = await fetch('/api/events');
+      const response = await fetch('/api/events-with-colors');
       if (!response.ok) throw new Error('Erreur lors du chargement des événements');
       return await response.json();
     } catch (error) {
@@ -22,63 +22,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function generateCalendar(month, year) {
     calendar.innerHTML = '';
-  
+
     const options = { month: 'long', year: 'numeric' };
     monthYear.textContent = new Date(year, month).toLocaleDateString('fr-FR', options);
-  
-    const dayNames = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']; // Lundi en premier
+
+    const dayNames = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
     dayNames.forEach(dayName => {
       const dayHeader = document.createElement('div');
       dayHeader.classList.add('day-header');
       dayHeader.textContent = dayName;
       calendar.appendChild(dayHeader);
     });
-  
-    const events = await fetchEvents();
-  
-    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Décalage pour commencer lundi
+
+    const events = await fetchEventsWithColors();
+    console.log("Events:", events); // Ajoutez ceci pour vérifier les données
+
+    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const lastDate = new Date(year, month + 1, 0).getDate();
-  
+
     for (let i = 0; i < firstDay; i++) {
       const emptyCell = document.createElement('div');
       emptyCell.classList.add('day');
       calendar.appendChild(emptyCell);
     }
-  
+
     for (let day = 1; day <= lastDate; day++) {
       const dayCell = document.createElement('div');
       dayCell.classList.add('day');
       dayCell.setAttribute('data-day', day);
-  
+
       const dayNumber = document.createElement('div');
       dayNumber.classList.add('day-number');
       dayNumber.textContent = day;
       dayCell.appendChild(dayNumber);
-  
-      const dayEvents = events
-        .filter(ev => {
-          const evDate = new Date(ev.date);
-          return evDate.getDate() === day && evDate.getMonth() === month && evDate.getFullYear() === year;
-        })
-        .sort((a, b) => new Date(a.date) - new Date(b.date)); // Trier par heure de début
-        
-        dayEvents.forEach(ev => {
-          const eventDiv = document.createElement('div');
-          eventDiv.classList.add('event');
-          eventDiv.setAttribute('data-event-id', ev.id);
-          eventDiv.style.backgroundColor = ev.color; // Appliquer la couleur de l'événement
-        
-          const eventTime = new Date(ev.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-          eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${eventTime}<br>${ev.description}`;
-          dayCell.appendChild(eventDiv);
-        
-          eventDiv.addEventListener('click', () => openEventModal(ev));
-        });
-  
+
+      const dayEvents = events.filter(ev => {
+        const evDate = new Date(ev.date);
+        return evDate.getDate() === day && evDate.getMonth() === month && evDate.getFullYear() === year;
+      }).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      dayEvents.forEach(ev => {
+        const eventDiv = document.createElement('div');
+        eventDiv.classList.add('event');
+        eventDiv.style.backgroundColor = ev.color; // Appliquer la couleur de l'événement
+
+        const eventTime = new Date(ev.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${eventTime}<br>${ev.description}`;
+        dayCell.appendChild(eventDiv);
+
+        eventDiv.addEventListener('click', () => openEventModal(ev));
+      });
+
       calendar.appendChild(dayCell);
     }
   }
-  
 
   function openEventModal(event) {
     document.getElementById('eventTitle').innerText = event.title;
@@ -100,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
       closeEventModal();
     }
   });
-
 
   function changeMonth(offset) {
     currentMonth += offset;

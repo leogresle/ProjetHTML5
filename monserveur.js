@@ -23,7 +23,7 @@ db.connect(err => {
     console.error('Erreur de connexion à la base de données:', err);
     return;
   }
-  console.log(' Connecté à la base de données MySQL');
+  console.log('Connecté à la base de données MySQL');
 });
 
 // Servir les fichiers statiques (CSS, JS, images, etc.)
@@ -39,9 +39,13 @@ app.get('/autre', (req, res) => {
   res.sendFile(path.join(__dirname, "Edit.html"));
 });
 
-//  Route API pour récupérer les événements
-app.get('/api/events', (req, res) => {
-  db.query('SELECT * FROM events', (err, results) => {
+app.get('/api/events-with-colors', (req, res) => {
+  const sql = `
+    SELECT e.*, c.color
+    FROM events e
+    JOIN clubs c ON e.club_name = c.name
+  `;
+  db.query(sql, (err, results) => {
     if (err) {
       console.error('Erreur lors de la récupération des événements:', err);
       return res.status(500).json({ error: 'Erreur serveur' });
@@ -50,7 +54,9 @@ app.get('/api/events', (req, res) => {
   });
 });
 
-//  Route API pour ajouter un événement
+
+
+// Route API pour ajouter un événement
 app.post('/api/events', (req, res) => {
   const { title, description, datetime } = req.body;
 
@@ -68,14 +74,7 @@ app.post('/api/events', (req, res) => {
   });
 });
 
-// Lancement du serveur sur le port 8000
-app.listen(8000, () => {
-  console.log(" Serveur démarré sur http://localhost:8080");
-});
-
-
-
-// Lancement du serveur sur le port 8000
+// Lancement du serveur sur le port 8080
 app.listen(8080, () => {
-  console.log("App listening on port 8080...");
+  console.log("Serveur démarré sur http://localhost:8080");
 });
