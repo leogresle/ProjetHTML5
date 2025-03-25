@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const calendar = document.getElementById('calendar');
   const monthYear = document.getElementById('month-year');
+  const filterOptions = document.getElementById('filter-options');
 
   const prevMonthButton = document.getElementById('prev-month');
   const nextMonthButton = document.getElementById('next-month');
@@ -8,11 +9,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const today = new Date();
   let currentMonth = today.getMonth();
   let currentYear = today.getFullYear();
+  let selectedClubs = new Set();
 
   async function fetchEventsWithColors() {
     try {
       const response = await fetch('/api/events-with-colors');
       if (!response.ok) throw new Error('Erreur lors du chargement des événements');
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  async function fetchClubs() {
+    try {
+      const response = await fetch('/api/clubs');
+      if (!response.ok) throw new Error('Erreur lors du chargement des clubs');
       return await response.json();
     } catch (error) {
       console.error(error);
@@ -35,7 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const events = await fetchEventsWithColors();
-    console.log("Events:", events); // Ajoutez ceci pour vérifier les données
+    const filteredEvents = selectedClubs.size > 0
+      ? events.filter(ev => selectedClubs.has(ev.club_name))
+      : events;
 
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const lastDate = new Date(year, month + 1, 0).getDate();
@@ -56,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dayNumber.textContent = day;
       dayCell.appendChild(dayNumber);
 
-      const dayEvents = events.filter(ev => {
+      const dayEvents = filteredEvents.filter(ev => {
         const evDate = new Date(ev.date);
         return evDate.getDate() === day && evDate.getMonth() === month && evDate.getFullYear() === year;
       }).sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -64,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dayEvents.forEach(ev => {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
-        eventDiv.style.backgroundColor = ev.color; // Appliquer la couleur de l'événement
+        eventDiv.style.backgroundColor = ev.color;
 
         const eventTime = new Date(ev.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${eventTime}<br>${ev.description}`;
@@ -75,6 +90,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
       calendar.appendChild(dayCell);
     }
+  }
+
+  async function generateFilterOptions() {
+    const clubs = await fetchClubs();
+    filterOptions.innerHTML = '';
+
+    clubs.forEach(club => {
+      const filterOption = document.createElement('div');
+      filterOption.classList.add('filter-option');
+      filterOption.innerHTML = `
+        <input type="checkbox" id="club-${club.name}" value="${club.name}">
+        <label for="club-${club.name}">${club.name}</label>
+      `;
+      filterOptions.appendChild(filterOption);
+
+      filterOption.querySelector('input').addEventListener('change', event => {
+        if (event.target.checked) {
+          selectedClubs.add(club.name);
+        } else {
+          selectedClubs.delete(club.name);
+        }
+        generateCalendar(currentMonth, currentYear);
+      });
+    });
   }
 
   function openEventModal(event) {
@@ -114,4 +153,5 @@ document.addEventListener('DOMContentLoaded', () => {
   nextMonthButton.addEventListener('click', () => changeMonth(1));
 
   generateCalendar(currentMonth, currentYear);
+  generateFilterOptions();
 });

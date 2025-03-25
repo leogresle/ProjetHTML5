@@ -54,6 +54,18 @@ app.get('/api/events-with-colors', (req, res) => {
   });
 });
 
+// Route API pour récupérer les clubs
+app.get('/api/clubs', (req, res) => {
+  const sql = 'SELECT * FROM clubs';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des clubs:', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+    res.json(results);
+  });
+});
+
 
 
 // Route API pour ajouter un événement

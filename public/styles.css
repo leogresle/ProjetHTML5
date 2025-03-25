@@ -5,13 +5,29 @@ body {
   margin: 0;
   padding: 20px;
 }
+
 .container {
-  max-width: 900px;
+  display: flex; /* Utilisation de flexbox pour organiser le filtre et le calendrier */
+  max-width: 1200px; /* Augmenter la largeur maximale pour accueillir le filtre */
   margin: auto;
   background: #fff;
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
+}
+
+/* Filtre par Club */
+#club-filter {
+  width: 200px; /* Largeur fixe pour le filtre */
+  padding: 20px;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  max-height: 100vh; /* Permet de faire défiler si le contenu dépasse la hauteur de la fenêtre */
+}
+
+#calendar-container {
+  flex: 1; /* Permet au calendrier de prendre le reste de l'espace */
+  padding: 20px;
 }
 
 /* En-tête du calendrier avec flexbox */
@@ -117,7 +133,6 @@ body {
   margin-left: 10px;
 }
 
-
 /* Modal Styles */
 .modal {
   display: none;
@@ -153,5 +168,37 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
+/* Style pour les options de filtre */
+#filter-options {
+  display: flex;
+  flex-direction: column;
+}
 
+.filter-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 0; /* Ajoute un peu de padding pour l'espacement */
+  border-bottom: 1px solid #ccc; /* Ajoute une barre de séparation */
+}
 
+.filter-option:last-child {
+  border-bottom: none; /* Supprime la barre de séparation du dernier élément */
+}
+
+.filter-option input[type="checkbox"] {
+  margin-right: 8px; /* Ajoute de l'espace entre la case à cocher et le texte */
+  width: 18px;
+  height: 18px;
+  accent-color: #007BFF; /* Change la couleur de la case à cocher */
+  cursor: pointer;
+}
+
+.filter-option label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.filter-option input[type="checkbox"]:checked {
+  background-color: #007BFF; /* Change la couleur de fond lorsque la case est cochée */
+}
