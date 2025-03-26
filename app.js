@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 
 // Créer une instance d'Express
 const app = express();
@@ -12,6 +13,8 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connexion à la base de données MySQL
 const db = mysql.createConnection({

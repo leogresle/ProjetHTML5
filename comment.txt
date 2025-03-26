@@ -6,3 +6,11 @@ Bcryptjs : pour hacher les mots de passe (comme dans ton code PHP).
 Cors : gère les accès aux ressources depuis des origines différentes
 
 Pour les installer : npm install nom_du_module
+
+
+Pour demarrer le serveur : 
+
+1) démarrer Xampp puis start apache et mysql 
+2) Sur phpmyAdmin, créer une base de données nommé "database" et importer le fichier database.sql du repository
+3) npm install express mysql2 bcryptjs body-parser cors
+4) node app.js
