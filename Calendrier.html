@@ -5,6 +5,8 @@
   <title>Calendrier d'Événements</title>
   <!-- Import du fichier CSS externe -->
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="calendar.css">
+  <link rel="stylesheet" href="ajout_event.css">
 </head>
 <body>
   <div class="container">
@@ -29,18 +31,6 @@
       <div id="calendar">
         <!-- Les en-têtes et jours seront générés par JS -->
       </div>
-  
-      <!-- Formulaire d'ajout d'événement -->
-      <div id="event-form">
-        <h3>Ajouter un Événement</h3>
-        <input type="text" id="event-title" placeholder="Titre de l'événement">
-        <textarea id="event-description" placeholder="Description"></textarea>
-        <input type="datetime-local" id="event-datetime">
-        <button id="add-event">Ajouter l'événement</button>
-        <button id="close-form">Fermer</button>
-      </div>
-    </div>
-  </div>
   
   <!-- Modal Structure -->
   <div id="eventModal" class="modal">

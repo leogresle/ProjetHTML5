@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Ajouter un Événement</title>
-  <!-- Import du fichier CSS externe -->
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="calendar.css">
+  <link rel="stylesheet" href="ajout_event.css">
+
 </head>
 <body>
   <div class="container">
-    <!-- Formulaire d'ajout d'événement -->
     <h3>Ajouter un Événement</h3>
-    <input type="text" id="event-title" placeholder="Titre de l'événement">
-    <textarea id="event-description" placeholder="Description"></textarea>
-    <input type="datetime-local" id="event-datetime">
+    <input type="text" id="event-title" placeholder="Titre de l'événement" required>
+    <textarea id="event-description" placeholder="Description" required></textarea>
+    <input type="datetime-local" id="event-datetime" required>
+    <input type="text" id="event-location" placeholder="Lieu de l'événement" required>
+    <input type="text" id="event-club" placeholder="Nom du Club" required>
     <button id="add-event">Ajouter l'événement</button>
   </div>
 
-  <h2> Mes événements : </h2> 
-  <!-- Mettre plus tard tout les evenement prévus du club connecté -->
+  <h2>Mes événements :</h2>
 
-  <!-- Import du fichier JS externe -->
   <script src="edit_Calendrier.js"></script>
 </body>
 </html>

@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Route pour la page d'accueil
 app.get('/accueil', (req, res) => {
-  res.sendFile(path.join(__dirname, "Calendier.html"));
+  res.sendFile(path.join(__dirname, "Calendrier.html"));
 });
 
 // Route pour la page d'édition
@@ -70,14 +70,14 @@ app.get('/api/clubs', (req, res) => {
 
 // Route API pour ajouter un événement
 app.post('/api/events', (req, res) => {
-  const { title, description, datetime } = req.body;
+  const { title, description, datetime, location, club } = req.body;
 
-  if (!title || !description || !datetime) {
+  if (!title || !description || !datetime || !location || !club) {
     return res.status(400).json({ error: "Tous les champs sont requis." });
   }
 
-  const sql = "INSERT INTO events (title, description, date) VALUES (?, ?, ?)";
-  db.query(sql, [title, description, datetime], (err, result) => {
+  const sql = "INSERT INTO events (title, description, date, location, club_name) VALUES (?, ?, ?, ?, ?)";
+  db.query(sql, [title, description, datetime, location, club], (err, result) => {
     if (err) {
       console.error("Erreur lors de l'insertion de l'événement:", err);
       return res.status(500).json({ error: "Erreur serveur." });
@@ -85,6 +85,7 @@ app.post('/api/events', (req, res) => {
     res.status(201).json({ message: "Événement ajouté avec succès !" });
   });
 });
+
 
 // Lancement du serveur sur le port 8080
 app.listen(8080, () => {
