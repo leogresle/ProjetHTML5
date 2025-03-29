@@ -120,10 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('eventTitle').innerText = event.title;
     document.getElementById('eventClub').innerText = event.club_name;
     document.getElementById('eventDate').innerText = new Date(event.date).toLocaleDateString('fr-FR');
+    document.getElementById('eventTime').innerText = new Date(event.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     document.getElementById('eventLocation').innerText = event.location;
     document.getElementById('eventDescription').innerText = event.description;
     document.getElementById('eventModal').style.display = 'block';
   }
+  
 
   function closeEventModal() {
     document.getElementById('eventModal').style.display = 'none';

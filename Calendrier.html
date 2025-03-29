@@ -15,7 +15,7 @@
         <!-- Les options de filtre seront générées ici -->
       </div>
     </div>
-  
+
     <!-- Conteneur du calendrier -->
     <div id="calendar-container">
       <!-- En-tête du calendrier -->
@@ -24,27 +24,28 @@
         <h2 id="month-year">Mois et Année</h2>
         <button id="next-month">Mois Suivant</button>
       </div>
-  
+
       <!-- Conteneur du calendrier -->
       <div id="calendar">
         <!-- Les en-têtes et jours seront générés par JS -->
       </div>
 
-  
-  <!-- Modal Structure -->
-  <div id="eventModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2 id="eventTitle"></h2>
-      <p><strong>Club:</strong> <span id="eventClub"></span></p>
-      <p><strong>Date:</strong> <span id="eventDate"></span></p>
-      <p><strong>Lieu:</strong> <span id="eventLocation"></span></p>
-      <p><strong>Description:</strong> <span id="eventDescription"></span></p>
+      <!-- Modal Structure -->
+      <div id="eventModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 id="eventTitle"></h2>
+          <p><strong>Club:</strong> <span id="eventClub"></span></p>
+          <p><strong>Date:</strong> <span id="eventDate"></span></p>
+          <p><strong>Heure:</strong> <span id="eventTime"></span></p> <!-- Nouvelle ligne pour l'heure -->
+          <p><strong>Lieu:</strong> <span id="eventLocation"></span></p>
+          <p><strong>Description:</strong> <span id="eventDescription"></span></p>
+        </div>
+      </div>
+
+      <!-- Import du fichier JS externe -->
+      <script src="calendrier.js"></script>
     </div>
   </div>
-  
-
-  <!-- Import du fichier JS externe -->
-  <script src="calendrier.js"></script>
 </body>
 </html>

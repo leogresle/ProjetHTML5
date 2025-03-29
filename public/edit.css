@@ -72,12 +72,13 @@ body {
 #event-form-container input,
 #event-form-container textarea,
 #event-form-container button {
-  width: 100%;
+  width: 100%; /* Assure que tous les éléments ont la même largeur */
   padding: 12px;
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+  box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
 }
 
 #event-form-container button {
