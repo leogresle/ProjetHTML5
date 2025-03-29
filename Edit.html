@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Ajouter un Événement</title>
   <link rel="stylesheet" href="edit.css">
-
 </head>
 <body>
   <div class="container">
@@ -16,18 +15,30 @@
       </div>
     </div>
 
-    <!-- Formulaire d'ajout d'événement -->
+     <!-- Ajout d'event ici -->
     <div id="event-form-container">
       <h3>Ajouter un Événement</h3>
       <input type="text" id="event-title" placeholder="Titre de l'événement" required>
       <textarea id="event-description" placeholder="Description" required></textarea>
       <input type="datetime-local" id="event-datetime" required>
       <input type="text" id="event-location" placeholder="Lieu de l'événement" required>
+      <div class="checkbox-container">
+        <input type="checkbox" id="event-visible">
+        <span class="custom-checkbox"></span>
+        <label for="event-visible">Visible dans le calendrier</label>
+      </div>
+      
       <button id="add-event">Ajouter l'événement</button>
     </div>
-  </div>
+    
 
-  <h2>Mes événements :</h2>
+
+    <!-- Section Mes événements -->
+    <h2>Mes événements :</h2>
+    <div id="my-events-container">
+      <!-- Les événements seront affichés ici -->
+    </div>
+  </div>
 
   <script src="edit_Calendrier.js"></script>
 </body>

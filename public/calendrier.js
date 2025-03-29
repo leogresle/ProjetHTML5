@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const events = await fetchEventsWithColors();
     const filteredEvents = selectedClubs.size > 0
-      ? events.filter(ev => selectedClubs.has(ev.club_name))
-      : events;
+      ? events.filter(ev => selectedClubs.has(ev.club_name) && ev.is_visible)
+      : events.filter(ev => ev.is_visible);
 
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const lastDate = new Date(year, month + 1, 0).getDate();
@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('eventDescription').innerText = event.description;
     document.getElementById('eventModal').style.display = 'block';
   }
-  
 
   function closeEventModal() {
     document.getElementById('eventModal').style.display = 'none';
