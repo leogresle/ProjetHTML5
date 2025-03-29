@@ -3,20 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Ajouter un Événement</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="calendar.css">
-  <link rel="stylesheet" href="ajout_event.css">
+  <link rel="stylesheet" href="edit.css">
 
 </head>
 <body>
   <div class="container">
-    <h3>Ajouter un Événement</h3>
-    <input type="text" id="event-title" placeholder="Titre de l'événement" required>
-    <textarea id="event-description" placeholder="Description" required></textarea>
-    <input type="datetime-local" id="event-datetime" required>
-    <input type="text" id="event-location" placeholder="Lieu de l'événement" required>
-    <input type="text" id="event-club" placeholder="Nom du Club" required>
-    <button id="add-event">Ajouter l'événement</button>
+    <!-- Section pour sélectionner le club -->
+    <div id="club-selection">
+      <h4>Sélectionner le Club :</h4>
+      <div id="club-options">
+        <!-- Les options de club seront générées ici -->
+      </div>
+    </div>
+
+    <!-- Formulaire d'ajout d'événement -->
+    <div id="event-form-container">
+      <h3>Ajouter un Événement</h3>
+      <input type="text" id="event-title" placeholder="Titre de l'événement" required>
+      <textarea id="event-description" placeholder="Description" required></textarea>
+      <input type="datetime-local" id="event-datetime" required>
+      <input type="text" id="event-location" placeholder="Lieu de l'événement" required>
+      <button id="add-event">Ajouter l'événement</button>
+    </div>
   </div>
 
   <h2>Mes événements :</h2>
