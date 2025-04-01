@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Admin</title>
-    <script src="authGuard.js"></script> <!-- Protection de la page -->
+    <script src="invitation.js"></script> <!-- Lien vers ton script invitation.js -->
 </head>
 <body>
     <h2>Espace Administrateur (BDE)</h2>
@@ -17,38 +17,7 @@
 
     <button id="logout-button">Se déconnecter</button>
 
-    <p id="message"></p>
-
-    <script>
-        document.getElementById("invite-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const email = document.getElementById("club-email").value;
-            const token = localStorage.getItem("token");
-
-            fetch("http://localhost:3000/api/invite", {
-                method: "POST",
-                headers: { 
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("message").textContent = data.message;
-            })
-            .catch(error => {
-                console.error("Erreur :", error);
-            });
-        });
-    </script>
-
-    <script>
-        document.getElementById("logout-button").addEventListener("click", function() {
-            localStorage.clear();  // Supprime le token et le rôle
-            window.location.href = "connexion.html";  // Redirection vers la page de connexion
-        });
-    </script>
+    <p id="message"></p> <!-- Message d'état pour l'admin -->
 
 </body>
 </html>
