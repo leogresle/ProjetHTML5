@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('success-message').textContent = 'Connexion réussie ! Vous êtes maintenant connecté.';
                     // Rediriger l'utilisateur ou afficher un message de succès
                     setTimeout(() => {
-                        window.location.href = 'index.html';  // Redirection après quelques secondes
+                        window.location.href = 'mailto.html';  // Redirection après quelques secondes
                     }, 1500); // Attente de 1.5 secondes avant redirection
                 } else {
                     document.getElementById('error-message').textContent = data.message;

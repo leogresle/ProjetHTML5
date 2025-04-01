@@ -14,3 +14,10 @@ Pour demarrer le serveur :
 2) Sur phpmyAdmin, créer une base de données nommé "database" et importer le fichier database.sql du repository
 3) npm install express mysql2 bcryptjs body-parser cors
 4) node app.js
+
+
+
+bde super admin 
+le club demande la creation d'un compte au super admin, le bde renseigne l'email et un mail est envoyé pour que le club définisse un mdp
+
+bouton connexion bde et bouton connexion pour les autres clubs
