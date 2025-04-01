@@ -134,7 +134,20 @@ app.put('/api/events/:id/visibility', (req, res) => {
   });
 });
 
+// Route API pour mettre à jour la description du club
+app.put('/api/clubs/:name/description', (req, res) => {
+  const clubName = req.params.name;
+  const { description } = req.body;
 
+  const sql = "UPDATE clubs SET description = ? WHERE name = ?";
+  db.query(sql, [description, clubName], (err, result) => {
+    if (err) {
+      console.error("Erreur lors de la mise à jour de la description du club:", err);
+      return res.status(500).json({ error: "Erreur serveur." });
+    }
+    res.json({ message: "Description du club mise à jour avec succès !" });
+  });
+});
 
 // Lancement du serveur sur le port 8080
 app.listen(8080, () => {

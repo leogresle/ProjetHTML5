@@ -8,6 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const clubOptions = document.getElementById('club-options');
   const myEventsContainer = document.getElementById('my-events-container');
 
+  // Vérifiez si le conteneur de personnalisation existe déjà
+  let customizationContainer = document.getElementById('customization-container');
+  if (!customizationContainer) {
+    customizationContainer = document.createElement('div');
+    customizationContainer.id = 'customization-container';
+    customizationContainer.innerHTML = `
+      <h3>Personnalisation du Club</h3>
+      <label for="club-description">Description du Club :</label>
+      <textarea id="club-description" rows="4" cols="50"></textarea>
+      <button id="save-description">Enregistrer la Description</button>
+    `;
+    document.querySelector('.container').appendChild(customizationContainer);
+  }
+
+  const clubDescription = document.getElementById('club-description');
+  const saveDescriptionButton = document.getElementById('save-description');
+
   let selectedClub = '';
 
   async function fetchClubs() {
@@ -60,6 +77,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function saveClubDescription(clubName, description) {
+    try {
+      const response = await fetch(`/api/clubs/${clubName}/description`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description }),
+      });
+      if (!response.ok) throw new Error('Erreur lors de la mise à jour de la description du club');
+      alert('Description du club mise à jour avec succès !');
+    } catch (error) {
+      console.error(error);
+      alert('Erreur lors de la mise à jour de la description du club.');
+    }
+  }
+
   async function generateClubOptions() {
     const clubs = await fetchClubs();
     clubOptions.innerHTML = '';
@@ -79,6 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
           // Charger et afficher les événements du club sélectionné
           const events = await fetchEventsByClub(selectedClub);
           displayEvents(events);
+
+          // Charger la description actuelle du club
+          clubDescription.value = club.description || '';
         }
       });
     });
@@ -188,6 +223,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Ajouter un gestionnaire d'événements pour le bouton d'enregistrement de la description
+  saveDescriptionButton.addEventListener('click', () => {
+    const description = clubDescription.value.trim();
+    if (description && selectedClub) {
+      saveClubDescription(selectedClub, description);
+    } else {
+      alert('Veuillez entrer une description pour le club et sélectionner un club.');
+    }
+  });
 
   generateClubOptions();
 });

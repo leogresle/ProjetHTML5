@@ -234,3 +234,43 @@ body {
   display: flex;
   align-items: center;
 }
+
+/* Style pour le conteneur de personnalisation */
+#customization-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Ajoute un espacement en bas */
+}
+
+#customization-container h3 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+#customization-container label,
+#customization-container textarea,
+#customization-container button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+#customization-container button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#customization-container button:hover {
+  background-color: #0056b3;
+}
