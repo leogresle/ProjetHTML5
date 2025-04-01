@@ -195,10 +195,11 @@ body {
   vertical-align: middle;
   transition: background-color 0.3s, border-color 0.3s;
   position: relative;
+  margin-right: 10px; /* Espacement entre la case et le texte */
 }
 
 /* Style pour la case à cocher lorsqu'elle est cochée */
-.checkbox-container input[type="checkbox"]:checked + .custom-checkbox {
+.checkbox-container input[type="checkbox"]:checked + label .custom-checkbox {
   background-color: #4caf50; /* Couleur verte */
   border-color: #4caf50;
 }
@@ -209,23 +210,27 @@ body {
   position: absolute;
   width: 7px;
   height: 14px;
-  border: solid #fff;
+  border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
   left: 50%;
   top: 25%;
+  margin-left: -3.5px; /* Centrer la coche */
+  margin-top: -7px; /* Centrer la coche */
   opacity: 0;
   transition: opacity 0.3s;
 }
 
 /* Afficher la coche lorsque la case est cochée */
-.checkbox-container input[type="checkbox"]:checked + .custom-checkbox::after {
+.checkbox-container input[type="checkbox"]:checked + label .custom-checkbox::after {
   opacity: 1;
 }
 
 /* Style pour le texte associé à la case à cocher */
 .checkbox-container label {
-  margin-left: 10px;
   font-size: 16px;
   color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
