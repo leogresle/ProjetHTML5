@@ -1,51 +1,42 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Vérifie si l'élément "login-form" existe avant d'ajouter l'événement
     const loginForm = document.getElementById('login-form');
+
     if (loginForm) {
         loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêcher l'envoi du formulaire par défaut
-            
-            // Récupérer les données du formulaire
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            event.preventDefault();
 
-            // Créer l'objet de données à envoyer
-            const data = {
-                email: email,
-                password: password
-            };
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-            // Envoyer les données via une requête POST AJAX
-            fetch('http://localhost:3000/api/connexion', {
+            fetch('http://localhost:3000/api/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
             })
             .then(response => response.json())
             .then(data => {
-                // Réinitialiser les messages à chaque soumission
-                document.getElementById('error-message').textContent = '';
-                document.getElementById('success-message').textContent = '';
+                if (data.message === "Connexion réussie") {
+                    localStorage.setItem("token", data.token);  // Stocker le token
+                    localStorage.setItem("role", data.role);  // Stocker le rôle
 
-                // Si la connexion réussit
-                if (data.message === 'Connexion réussie.') {
-                    document.getElementById('success-message').textContent = 'Connexion réussie ! Vous êtes maintenant connecté.';
-                    // Rediriger l'utilisateur ou afficher un message de succès
+                    document.getElementById('success-message').textContent = "Connexion réussie !";
+
+                    // Redirection en fonction du rôle
                     setTimeout(() => {
-                        window.location.href = 'mailto.html';  // Redirection après quelques secondes
-                    }, 1500); // Attente de 1.5 secondes avant redirection
+                        if (data.role === "admin") {
+                            window.location.href = "admin.html";  // Page de l'admin
+                        } else {
+                            window.location.href = "dashboard.html";  // Page des clubs
+                        }
+                    }, 1500);
                 } else {
                     document.getElementById('error-message').textContent = data.message;
                 }
             })
             .catch(error => {
-                console.error('Erreur:', error);
-                document.getElementById('error-message').textContent = 'Erreur de communication avec le serveur.';
+                console.error("Erreur :", error);
+                document.getElementById('error-message').textContent = "Erreur de communication avec le serveur.";
             });
         });
-    } else {
-        console.error("Le formulaire de connexion n'a pas été trouvé.");
     }
 });
