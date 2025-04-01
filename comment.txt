@@ -12,7 +12,7 @@ Pour demarrer le serveur :
 
 1) démarrer Xampp puis start apache et mysql 
 2) Sur phpmyAdmin, créer une base de données nommé "database" et importer le fichier database.sql du repository
-3) npm install express mysql2 bcryptjs body-parser cors
+3) npm install express mysql2 bcryptjs jsonwebtoken cors body-parser nodemailer
 4) node app.js
 
 
