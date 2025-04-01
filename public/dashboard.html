@@ -11,4 +11,11 @@
     <p>Vous pouvez gérer vos événements ici.</p>
     <button id="logout-button">Se déconnecter</button>
 </body>
+<script>
+    document.getElementById("logout-button").addEventListener("click", function() {
+        localStorage.clear();  // Supprime le token et le rôle
+        window.location.href = "connexion.html";  // Redirection vers la page de connexion
+    });
+</script>
+
 </html>

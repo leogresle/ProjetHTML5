@@ -42,5 +42,13 @@
             });
         });
     </script>
+
+    <script>
+        document.getElementById("logout-button").addEventListener("click", function() {
+            localStorage.clear();  // Supprime le token et le rôle
+            window.location.href = "connexion.html";  // Redirection vers la page de connexion
+        });
+    </script>
+
 </body>
 </html>
