@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Admin</title>
+    <script src="authGuard.js"></script> <!-- Protection de la page -->
+</head>
+<body>
+    <h2>Espace Administrateur (BDE)</h2>
+    <p>Envoyer une invitation aux clubs :</p>
+
+    <form id="invite-form">
+        <input type="email" id="club-email" placeholder="Email du club" required>
+        <button type="submit">Envoyer Invitation</button>
+    </form>
+
+    <button id="logout-button">Se déconnecter</button>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("invite-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const email = document.getElementById("club-email").value;
+            const token = localStorage.getItem("token");
+
+            fetch("http://localhost:3000/api/invite", {
+                method: "POST",
+                headers: { 
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("message").textContent = data.message;
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+            });
+        });
+    </script>
+</body>
+</html>
