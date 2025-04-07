@@ -7,8 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const addEventButton = document.getElementById('add-event');
   const clubOptions = document.getElementById('club-options');
   const myEventsContainer = document.getElementById('my-events-container');
+  const clubColorInput = document.getElementById('club-color');
+  const saveColorButton = document.getElementById('save-color');
 
-  // Vérifiez si le conteneur de personnalisation existe déjà
   let customizationContainer = document.getElementById('customization-container');
   if (!customizationContainer) {
     customizationContainer = document.createElement('div');
@@ -18,6 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
       <label for="club-description">Description du Club :</label>
       <textarea id="club-description" rows="4" cols="50"></textarea>
       <button id="save-description">Enregistrer la Description</button>
+      <div class="color-picker-container">
+        <label for="club-color">Couleur du Club :</label>
+        <div class="color-input-container">
+          <input type="color" id="club-color" name="club-color" value="#ffffff">
+          <span class="color-advice">Nous vous conseillons de prendre une couleur claire pour que la description de votre événement soit visible.</span>
+        </div>
+      </div>
+      <button id="save-color">Enregistrer la Couleur</button>
     `;
     document.querySelector('.container').appendChild(customizationContainer);
   }
@@ -92,6 +101,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function saveClubColor(clubName, color) {
+    try {
+      const response = await fetch(`/api/clubs/${clubName}/color`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ color }),
+      });
+      if (!response.ok) throw new Error('Erreur lors de la mise à jour de la couleur du club');
+      alert('Couleur du club mise à jour avec succès !');
+    } catch (error) {
+      console.error(error);
+      alert('Erreur lors de la mise à jour de la couleur du club.');
+    }
+  }
+
   async function generateClubOptions() {
     const clubs = await fetchClubs();
     clubOptions.innerHTML = '';
@@ -114,6 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
           // Charger la description actuelle du club
           clubDescription.value = club.description || '';
+
+          // Charger la couleur actuelle du club
+          clubColorInput.value = club.color || '#ffffff';
         }
       });
     });
@@ -231,6 +258,16 @@ document.addEventListener('DOMContentLoaded', () => {
       saveClubDescription(selectedClub, description);
     } else {
       alert('Veuillez entrer une description pour le club et sélectionner un club.');
+    }
+  });
+
+  // Ajouter un gestionnaire d'événements pour le bouton d'enregistrement de la couleur
+  saveColorButton.addEventListener('click', () => {
+    const color = clubColorInput.value.trim();
+    if (color && selectedClub) {
+      saveClubColor(selectedClub, color);
+    } else {
+      alert('Veuillez choisir une couleur pour le club et sélectionner un club.');
     }
   });
 

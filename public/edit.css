@@ -251,12 +251,18 @@ body {
   color: #333;
 }
 
-#customization-container label,
+#customization-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
 #customization-container textarea,
 #customization-container button {
   width: 100%;
   padding: 12px;
-  margin: 10px 0;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
@@ -273,4 +279,53 @@ body {
 
 #customization-container button:hover {
   background-color: #0056b3;
+}
+
+/* Style pour l'input de couleur */
+#club-color {
+  width: 80px; /* Augmente la largeur */
+  height: 40px; /* Augmente la hauteur pour garder un aspect carré */
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff; /* Assurez-vous que le fond est blanc par défaut */
+}
+
+/* Style pour le conteneur de l'input de couleur */
+.color-picker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+/* Style pour le conteneur de l'input de couleur et du conseil */
+.color-input-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+/* Style pour le message de conseil */
+.color-advice {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Style pour le bouton de couleur */
+#save-color {
+  background-color: #4caf50; /* Couleur verte */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+#save-color:hover {
+  background-color: #43a047; /* Couleur verte plus foncée au survol */
 }
