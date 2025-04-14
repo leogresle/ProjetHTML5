@@ -252,3 +252,21 @@ body {
   color: #333;
   cursor: pointer;
 }
+
+/* Style pour le bouton "Ajouter à Google Agenda" */
+#addToGoogleCalendar {
+  background-color: #4285F4; /* Couleur bleue de Google */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+#addToGoogleCalendar:hover {
+  background-color: #357ae8; /* Couleur bleue plus foncée au survol */
+}

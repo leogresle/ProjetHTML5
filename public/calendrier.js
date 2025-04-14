@@ -124,11 +124,38 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('eventLocation').innerText = event.location;
     document.getElementById('eventDescription').innerText = event.description;
     document.getElementById('eventModal').style.display = 'block';
+
+    // Générer le lien pour ajouter à Google Agenda
+    const googleCalendarLink = generateGoogleCalendarLink(event);
+    document.getElementById('addToGoogleCalendar').onclick = () => window.open(googleCalendarLink, '_blank');
   }
 
   function closeEventModal() {
     document.getElementById('eventModal').style.display = 'none';
   }
+
+  function generateGoogleCalendarLink(event) {
+    // Utiliser la date de l'événement
+    const startDate = new Date(event.date);
+    const endDate = new Date(new Date(event.date).getTime() + 60 * 60 * 1000); // 1 heure après le début
+  
+    // Fonction pour formater la date en YYYYMMDDTHHmmssZ
+    function formatDate(date) {
+      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    }
+  
+    const startTime = formatDate(startDate);
+    const endTime = formatDate(endDate);
+  
+    const title = encodeURIComponent(event.title);
+    const description = encodeURIComponent(event.description);
+    const location = encodeURIComponent(event.location);
+  
+    return `https://www.google.com/calendar/event?action=TEMPLATE&text=${title}&dates=${startTime}/${endTime}&details=${description}&location=${location}`;
+  }
+  
+
+  
 
   document.querySelector('.close').addEventListener('click', closeEventModal);
 
