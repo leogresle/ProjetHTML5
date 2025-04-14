@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des clubs</title>
+</head>
+<body>
+  <h1>📋 Liste des clubs</h1>
+  <ul id="clubs-list"></ul>
+
+  <script>
+    fetch('/api/clubs')
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById('clubs-list');
+        data.forEach(club => {
+          const li = document.createElement('li');
+          li.textContent = club.email;
+          ul.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
