@@ -164,6 +164,35 @@ app.put('/api/clubs/:name/color', (req, res) => {
   });
 });
 
+app.post('/api/events/:id/like', async (req, res) => {
+  const eventId = req.params.id;
+
+  try {
+    // Incrémenter le nombre de likes
+    await db.promise().query('UPDATE events SET likes = likes + 1 WHERE id = ?', [eventId]);
+
+    res.json({ message: 'Like ajouté avec succès !' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur serveur.' });
+  }
+});
+
+app.post('/api/events/:id/unlike', async (req, res) => {
+  const eventId = req.params.id;
+
+  try {
+    // Décrémenter le nombre de likes
+    await db.promise().query('UPDATE events SET likes = likes - 1 WHERE id = ?', [eventId]);
+
+    res.json({ message: 'Unlike effectué avec succès !' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur serveur.' });
+  }
+});
+
+
 
 // Lancement du serveur sur le port 8080
 app.listen(8080, () => {

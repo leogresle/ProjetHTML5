@@ -270,3 +270,47 @@ body {
 #addToGoogleCalendar:hover {
   background-color: #357ae8; /* Couleur bleue plus foncée au survol */
 }
+
+/* Container pour le bouton Like */
+.like-container {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+/* Style pour le bouton Like/Unlike */
+.like-button {
+  background-color: #3498db; /* Couleur bleue par défaut pour Like */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+/* Effet de survol */
+.like-button:hover {
+  background-color: #2980b9; /* Couleur bleue plus foncée au survol */
+}
+
+/* Effet de clic */
+.like-button:active {
+  transform: scale(0.95); /* Réduit légèrement la taille du bouton lors du clic */
+}
+
+/* Style pour le bouton lorsqu'il est désactivé (après un like/unlike) */
+.like-button:disabled {
+  background-color: #95a5a6; /* Couleur grise pour indiquer qu'il est désactivé */
+  cursor: not-allowed;
+}
+
+/* Style pour le bouton en mode Unlike */
+.like-button.unliked {
+  background-color: #e74c3c; /* Couleur rouge pour Unlike */
+}
+
+.like-button.unliked:hover {
+  background-color: #c0392b; /* Couleur rouge plus foncée au survol */
+}
