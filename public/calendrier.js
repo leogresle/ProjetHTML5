@@ -135,13 +135,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Vérifier si l'utilisateur a déjà liké cet événement
     const likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+    const likeButton = document.getElementById('likeButton');
     if (likedEvents.includes(event.id)) {
-      document.getElementById('likeButton').textContent = 'Unlike';
+      likeButton.textContent = 'Unlike';
+      likeButton.classList.add('unliked');
     } else {
-      document.getElementById('likeButton').textContent = 'Like';
+      likeButton.textContent = 'Like';
+      likeButton.classList.remove('unliked');
     }
   }
-
   function closeEventModal() {
     document.getElementById('eventModal').style.display = 'none';
   }
@@ -176,18 +178,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('likeButton').addEventListener('click', () => {
     const eventId = currentEventId; // Assurez-vous que currentEventId est défini
-  
+
     // Vérifier si l'utilisateur a déjà liké cet événement
-    let likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+    const likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
     const isLiked = likedEvents.includes(eventId);
-  
+
     const likeButton = document.getElementById('likeButton');
-  
+
     if (isLiked) {
       // Retirer le like
-      likedEvents = likedEvents.filter(id => id !== eventId);
-      localStorage.setItem('likedEvents', JSON.stringify(likedEvents));
-  
+      const updatedLikedEvents = likedEvents.filter(id => id !== eventId);
+      localStorage.setItem('likedEvents', JSON.stringify(updatedLikedEvents));
+
       // Envoyer une requête au serveur pour décrémenter le nombre de likes
       fetch(`/api/events/${eventId}/unlike`, {
         method: 'POST',
@@ -196,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
           // Changer le texte et la couleur du bouton pour indiquer que l'événement a été unliké
           likeButton.textContent = 'Like';
           likeButton.classList.remove('unliked');
-          likeButton.disabled = false;
         } else {
           console.error('Erreur lors de la mise à jour du unlike.');
         }
@@ -205,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Ajouter le like
       likedEvents.push(eventId);
       localStorage.setItem('likedEvents', JSON.stringify(likedEvents));
-  
       // Envoyer une requête au serveur pour incrémenter le nombre de likes
       fetch(`/api/events/${eventId}/like`, {
         method: 'POST',
@@ -214,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
           // Changer le texte et la couleur du bouton pour indiquer que l'événement a été liké
           likeButton.textContent = 'Unlike';
           likeButton.classList.add('unliked');
-          likeButton.disabled = false;
         } else {
           console.error('Erreur lors de la mise à jour du like.');
         }
