@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1>Connexion</h1>
-  <form id="login-form">
+  <form action="/login" method="POST">
     <input type="email" name="email" placeholder="Email" required />
     <input type="password" name="password" placeholder="Mot de passe" required />
     <button type="submit">Se connecter</button>
@@ -28,7 +28,7 @@
 
       const result = await response.text();
       alert(result);
-      
+
       if (response.redirected) {
         window.location.href = response.url;
       }

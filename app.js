@@ -15,9 +15,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views')));
 
 app.use(session({
-  secret: 'super-secret-key', // à mettre dans ton .env plus tard
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
 }));
 
 
@@ -102,14 +102,14 @@ app.post('/login', (req, res) => {
           // Si le mot de passe est correct, on vérifie le rôle
           req.session.user = user;  // Stocker l'utilisateur dans la session
           if (user.role === 'admin') {
-            // Si le rôle est "admin", rediriger vers le dashboard BDE
+            // Admin = BDE -> rediriger vers le dashboard BDE
             return res.redirect('/bde-dashboard.html');
           } else if (user.role === 'club') {
-            // Si c'est un club, rediriger vers son dashboard
+            // Club -> rediriger vers son dashboard
             return res.redirect('/club-dashboard.html');
           } else {
             // Si l'utilisateur est un lambda, rediriger vers la page d'accueil
-            return res.redirect('/landing.html');
+            return res.redirect('/');
           }
         } else {
           return res.status(400).send('Mot de passe incorrect');
@@ -197,24 +197,6 @@ app.get('/ajouter-evenement.html', isAuthenticated, isClub, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'ajouter-evenement.html'));
 });
   
-// app.post('/ajouter-evenement', isAuthenticated, isClub, (req, res) => {
-//     const { titre, description, date } = req.body;
-//     const userId = req.session.user.id;
-
-//     const query = 'INSERT INTO events (titre, description, date, club_id) VALUES (?, ?, ?, ?)';
-//     db.query(query, [titre, description, date, userId], (err) => {
-//         if (err) return res.status(500).send('Erreur lors de l’ajout');
-//         res.send('Événement ajouté !');
-//     });
-// });
-
-app.get('/api/evenements', (req, res) => {
-    db.query('SELECT * FROM events', (err, results) => {
-      if (err) return res.status(500).json([]);
-      res.json(results);
-    });
-});
-  
 app.get('/api/clubs', (req, res) => {
     db.query('SELECT email FROM users WHERE role = "club"', (err, results) => {
       if (err) return res.status(500).json([]);
@@ -222,7 +204,7 @@ app.get('/api/clubs', (req, res) => {
     });
 });
   
-// Route pour un utilisateur lambda
+
 app.get('/user-dashboard.html', isAuthenticated, isUser, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'user-dashboard.html'));
 });
@@ -232,9 +214,13 @@ function isUser(req, res, next) {
     if (req.session && req.session.user && req.session.user.role === 'user') {
       return next();
     }
-    res.redirect('/landing.html');  // Si l'utilisateur n'est pas un "lambda", redirection vers la page d'accueil
+    res.redirect('/');  // Si l'utilisateur n'est pas un "lambda", redirection vers la page d'accueil
 }
-    
+
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
 
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
