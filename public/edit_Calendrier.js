@@ -149,14 +149,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function displayEvents(events) {
     // Trier les événements par date croissante
     events.sort((a, b) => new Date(a.date) - new Date(b.date));
-
+  
     myEventsContainer.innerHTML = '';
 
     if (events.length === 0) {
       myEventsContainer.innerHTML = '<p>Aucun événement trouvé pour ce club.</p>';
       return;
     }
-
+  
     events.forEach(event => {
       const eventDiv = document.createElement('div');
       eventDiv.classList.add('event');
@@ -165,12 +165,15 @@ document.addEventListener('DOMContentLoaded', () => {
         <p><strong>Date:</strong> ${new Date(event.date).toLocaleString('fr-FR')}</p>
         <p><strong>Lieu:</strong> ${event.location}</p>
         <p>${event.description}</p>
-        <button class="delete-button" data-event-id="${event.id}">Supprimer</button>
-        <button class="toggle-visibility-button ${event.is_visible ? 'show' : 'hide'}" data-event-id="${event.id}">${event.is_visible ? 'Cacher' : 'Afficher'}</button>
+        <div class="event-actions">
+          <button class="delete-button" data-event-id="${event.id}">Supprimer</button>
+          <button class="toggle-visibility-button ${event.is_visible ? 'show' : 'hide'}" data-event-id="${event.id}">${event.is_visible ? 'Cacher' : 'Afficher'}</button>
+        </div>
+        <div class="like-count">Likes: <span class="like-number">${event.likes || 0}</span></div>
       `;
       myEventsContainer.appendChild(eventDiv);
     });
-
+  
     // Ajouter des gestionnaires d'événements pour les boutons de suppression et de visibilité
     document.querySelectorAll('.delete-button').forEach(button => {
       button.addEventListener('click', async event => {
@@ -189,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
-
+  
     document.querySelectorAll('.toggle-visibility-button').forEach(button => {
       button.addEventListener('click', async event => {
         const eventId = event.target.getAttribute('data-event-id');
@@ -207,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+  
 
   if (addEventButton) {
     addEventButton.addEventListener('click', async () => {

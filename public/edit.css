@@ -329,3 +329,53 @@ body {
 #save-color:hover {
   background-color: #43a047; /* Couleur verte plus foncée au survol */
 }
+
+.event {
+  position: relative;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.event-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.like-count {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.like-number {
+  font-weight: bold;
+}
+
+.delete-button, .toggle-visibility-button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.toggle-visibility-button.show {
+  background-color: #4caf50;
+  color: white;
+}
+
+.toggle-visibility-button.hide {
+  background-color: #ff9800;
+  color: white;
+}
+
