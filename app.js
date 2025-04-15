@@ -21,27 +21,33 @@ app.use(session({
 }));
 
 
-// Middlewares
+// Middleware pour vérifier si l'utilisateur est authentifié
 function isAuthenticated(req, res, next) {
-    if (!req.session.user) {
-      return res.status(401).send('Vous devez être connecté');
-    }
-    next();
+  console.log("Vérification de la session - User:", req.session.user); // Debug
+  if (!req.session.user) {
+    return res.redirect('/login.html');
+  }
+  next();
 }
-  
+
+// Middleware pour vérifier si l'utilisateur est admin
 function isAdmin(req, res, next) {
-    if (req.session.user?.role !== 'admin') {
-      return res.status(403).send('Accès refusé');
-    }
-    next();
+  console.log("Vérification du rôle admin pour l'utilisateur:", req.session.user?.role); // Debug
+  if (req.session.user?.role !== 'admin') {
+    return res.status(403).send('Accès refusé, vous devez être un administrateur pour accéder à cette page.');
+  }
+  next();
 }
-  
+
+// Middleware pour vérifier si l'utilisateur est un club
 function isClub(req, res, next) {
-    if (req.session.user?.role !== 'club') {
-      return res.status(403).send('Accès club requis');
-    }
-    next();
+  console.log("Vérification du rôle club pour l'utilisateur:", req.session.user?.role); // Debug
+  if (req.session.user?.role !== 'club') {
+    return res.status(403).send('Accès club requis.');
+  }
+  next();
 }
+
 
   
 app.get('/ajouter-club', isAuthenticated, isAdmin, (req, res) => {
@@ -85,38 +91,33 @@ app.post('/set-password/:userId', (req, res) => {
 
 // Route pour la connexion (login)
 app.post('/login', (req, res) => {
-    const { email, password } = req.body;
-  
-    // Vérifier si l'utilisateur existe dans la base de données
-    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-      if (err) return res.status(500).send('Erreur serveur');
-      if (results.length === 0) return res.status(400).send('Utilisateur non trouvé');
-  
-      const user = results[0];
-  
-      // Vérifier si le mot de passe est correct
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) return res.status(500).send('Erreur de mot de passe');
-        
-        if (isMatch) {
-          // Si le mot de passe est correct, on vérifie le rôle
-          req.session.user = user;  // Stocker l'utilisateur dans la session
-          if (user.role === 'admin') {
-            // Admin = BDE -> rediriger vers le dashboard BDE
-            return res.redirect('/bde-dashboard.html');
-          } else if (user.role === 'club') {
-            // Club -> rediriger vers son dashboard
-            return res.redirect('/club-dashboard.html');
-          } else {
-            // Si l'utilisateur est un lambda, rediriger vers la page d'accueil
-            return res.redirect('/');
-          }
+  const { email, password } = req.body;
+
+  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) return res.status(500).send('Erreur serveur');
+    if (results.length === 0) return res.status(400).send('Utilisateur non trouvé');
+
+    const user = results[0];
+
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err) return res.status(500).send('Erreur de mot de passe');
+
+      if (isMatch) {
+        req.session.user = user;  // Stocke l'utilisateur dans la session
+        if (user.role === 'admin') {
+          return res.redirect('/bde-dashboard.html');
+        } else if (user.role === 'club') {
+          return res.redirect('/club-dashboard.html');
         } else {
-          return res.status(400).send('Mot de passe incorrect');
+          return res.redirect('/user-dashboard.html');
         }
-      });
+      } else {
+        return res.status(400).send('Mot de passe incorrect');
+      }
     });
+  });
 });
+
   
   
 
@@ -223,10 +224,18 @@ app.get('/login.html', (req, res) => {
 
 
 app.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-      res.redirect('/');
-    });
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send('Erreur lors de la déconnexion');
+    }
+
+    // Vérifier que la session est bien détruite
+    console.log("Session détruite :", req.session); // Debug
+    res.clearCookie('connect.sid'); // Supprime explicitement le cookie de session
+    res.redirect('/login.html');
+  });
 });
+
 
 // Lancer le serveur
 const port = process.env.PORT || 3000;
