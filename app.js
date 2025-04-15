@@ -5,12 +5,20 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const sendEmail = require('./config/mailer'); // Pour envoyer des emails
 const db = require('./config/db'); // Importer la connexion à la base de données
+const session = require('express-session');
 
 dotenv.config();  // Charger les variables d'environnement depuis .env
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views')));
+
+app.use(session({
+  secret: 'super-secret-key', // à mettre dans ton .env plus tard
+  resave: false,
+  saveUninitialized: true
+}));
 
 
 // Middlewares
@@ -55,25 +63,25 @@ app.post('/set-password/:userId', (req, res) => {
   const { password } = req.body;
   const userId = req.params.userId;
 
-  // Hachage du mot de passe
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {
-      console.error('Erreur lors du hachage du mot de passe', err);
-      return res.status(500).send('Erreur lors du changement du mot de passe');
+      console.error('Erreur hachage :', err);
+      return res.status(500).send('Erreur hachage');
     }
 
-    // Mettre à jour le mot de passe dans la base de données
     const query = 'UPDATE users SET password = ? WHERE id = ?';
     db.query(query, [hashedPassword, userId], (err, result) => {
       if (err) {
-        console.error('Erreur lors de la mise à jour du mot de passe', err);
-        return res.status(500).send('Erreur lors du changement du mot de passe');
+        console.error('Erreur update :', err);
+        return res.status(500).send('Erreur DB');
       }
 
-      res.send('Mot de passe défini avec succès');
+      console.log(`[DEBUG] Mot de passe défini pour user ID ${userId}`);
+      res.send('Mot de passe enregistré ! Vous pouvez maintenant vous connecter.');
     });
   });
 });
+
 
 // Route pour la connexion (login)
 app.post('/login', (req, res) => {
@@ -113,28 +121,36 @@ app.post('/login', (req, res) => {
   
 
 app.post('/check-email', (req, res) => {
-    const { email } = req.body;
-  
-    const query = 'SELECT * FROM users WHERE email = ?';
-    db.query(query, [email], (err, results) => {
-      if (err) return res.status(500).send('Erreur serveur');
-  
-      if (results.length === 0) {
-        // Aucune entrée en BDD → accès lecture seule
-        return res.redirect('/calendar.html');
-      }
-  
-      const user = results[0];
-  
-      // Si aucun mot de passe, redirige vers création
-      if (!user.password) {
-        return res.redirect(`/set-password/${user.id}`);
-      }
-  
-      // Sinon redirige vers login classique
-      return res.redirect('/login.html');
-    });
-  });  
+  const { email } = req.body;
+  console.log('[DEBUG] Email reçu :', email); // 🔍 Affiche l’email
+
+  const query = 'SELECT * FROM users WHERE email = ?';
+  db.query(query, [email], (err, results) => {
+    if (err) {
+      console.error('[DEBUG] Erreur BDD :', err);
+      return res.status(500).send('Erreur serveur');
+    }
+
+    console.log('[DEBUG] Résultats de la BDD :', results);
+
+    if (results.length === 0) {
+      console.log('[DEBUG] Aucune correspondance, redirection vers calendrier');
+      return res.redirect('/calendar.html');
+    }
+
+    const user = results[0];
+    console.log('[DEBUG] Utilisateur trouvé :', user);
+
+    if (!user.password) {
+      console.log('[DEBUG] Mot de passe inexistant, redirection vers set-password');
+      return res.redirect(`/set-password/${user.id}`);
+    }
+
+    console.log('[DEBUG] Mot de passe existant, redirection vers login');
+    return res.redirect('/login.html');
+  });
+});
+ 
 
 app.get('/bde-dashboard.html', isAuthenticated, isAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'bde-dashboard.html'));

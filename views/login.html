@@ -2,17 +2,37 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connexion</title>
-  <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-  <h1>Page de Connexion</h1>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required><br>
-    <input type="password" id="password" placeholder="Mot de passe" required><br>
+  <h1>Connexion</h1>
+  <form id="login-form">
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="password" name="password" placeholder="Mot de passe" required />
     <button type="submit">Se connecter</button>
   </form>
-  <script src="/public/js/script.js"></script>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const result = await response.text();
+      alert(result);
+      
+      if (response.redirected) {
+        window.location.href = response.url;
+      }
+    });
+  </script>
 </body>
 </html>
