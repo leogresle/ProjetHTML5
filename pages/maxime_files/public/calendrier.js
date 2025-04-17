@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentMonth = today.getMonth();
   let currentYear = today.getFullYear();
   let selectedClubs = new Set();
+  let currentEventId = null;
 
   async function fetchEventsWithColors() {
     try {
@@ -85,7 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
         eventDiv.innerHTML = `<strong>${ev.title}</strong><br>${eventTime}<br>${ev.description}`;
         dayCell.appendChild(eventDiv);
 
-        eventDiv.addEventListener('click', () => openEventModal(ev));
+        eventDiv.addEventListener('click', () => {
+          currentEventId = ev.id; // Stocker l'ID de l'événement actuel
+          openEventModal(ev);
+        });
       });
 
       calendar.appendChild(dayCell);
@@ -124,10 +128,44 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('eventLocation').innerText = event.location;
     document.getElementById('eventDescription').innerText = event.description;
     document.getElementById('eventModal').style.display = 'block';
-  }
 
+    // Générer le lien pour ajouter à Google Agenda
+    const googleCalendarLink = generateGoogleCalendarLink(event);
+    document.getElementById('addToGoogleCalendar').onclick = () => window.open(googleCalendarLink, '_blank');
+
+    // Vérifier si l'utilisateur a déjà liké cet événement
+    const likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+    const likeButton = document.getElementById('likeButton');
+    if (likedEvents.includes(event.id)) {
+      likeButton.textContent = 'Unlike';
+      likeButton.classList.add('unliked');
+    } else {
+      likeButton.textContent = 'Like';
+      likeButton.classList.remove('unliked');
+    }
+  }
   function closeEventModal() {
     document.getElementById('eventModal').style.display = 'none';
+  }
+
+  function generateGoogleCalendarLink(event) {
+    // Utiliser la date de l'événement
+    const startDate = new Date(event.date);
+    const endDate = new Date(new Date(event.date).getTime() + 60 * 60 * 1000); // 1 heure après le début (arbitraire)
+
+    // Fonction pour formater la date en YYYYMMDDTHHmmssZ
+    function formatDate(date) {
+      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    }
+
+    const startTime = formatDate(startDate);
+    const endTime = formatDate(endDate);
+
+    const title = encodeURIComponent(event.title);
+    const description = encodeURIComponent(event.description);
+    const location = encodeURIComponent(event.location);
+
+    return `https://www.google.com/calendar/event?action=TEMPLATE&text=${title}&dates=${startTime}/${endTime}&details=${description}&location=${location}`;
   }
 
   document.querySelector('.close').addEventListener('click', closeEventModal);
@@ -138,6 +176,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  document.getElementById('likeButton').addEventListener('click', () => {
+    const eventId = currentEventId; // Assurez-vous que currentEventId est défini
+
+    // Vérifier si l'utilisateur a déjà liké cet événement
+    const likedEvents = JSON.parse(localStorage.getItem('likedEvents')) || [];
+    const isLiked = likedEvents.includes(eventId);
+
+    const likeButton = document.getElementById('likeButton');
+
+    if (isLiked) {
+      // Retirer le like
+      const updatedLikedEvents = likedEvents.filter(id => id !== eventId);
+      localStorage.setItem('likedEvents', JSON.stringify(updatedLikedEvents));
+
+      // Envoyer une requête au serveur pour décrémenter le nombre de likes
+      fetch(`/api/events/${eventId}/unlike`, {
+        method: 'POST',
+      }).then(response => {
+        if (response.ok) {
+          // Changer le texte et la couleur du bouton pour indiquer que l'événement a été unliké
+          likeButton.textContent = 'Like';
+          likeButton.classList.remove('unliked');
+        } else {
+          console.error('Erreur lors de la mise à jour du unlike.');
+        }
+      }).catch(error => console.error('Erreur lors de la mise à jour du unlike:', error));
+    } else {
+      // Ajouter le like
+      likedEvents.push(eventId);
+      localStorage.setItem('likedEvents', JSON.stringify(likedEvents));
+      // Envoyer une requête au serveur pour incrémenter le nombre de likes
+      fetch(`/api/events/${eventId}/like`, {
+        method: 'POST',
+      }).then(response => {
+        if (response.ok) {
+          // Changer le texte et la couleur du bouton pour indiquer que l'événement a été liké
+          likeButton.textContent = 'Unlike';
+          likeButton.classList.add('unliked');
+        } else {
+          console.error('Erreur lors de la mise à jour du like.');
+        }
+      }).catch(error => console.error('Erreur lors de la mise à jour du like:', error));
+    }
+  });
+  
+  
   function changeMonth(offset) {
     currentMonth += offset;
     if (currentMonth > 11) {
