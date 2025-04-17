@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 const sendEmail = require('./config/mailer'); // Pour envoyer des emails
 const db = require('./config/db'); // Importer la connexion à la base de données
 const session = require('express-session');
+const { isAuthenticated, isClub, isAdmin } = require('./middlewares/auth');
+
 
 dotenv.config();  // Charger les variables d'environnement depuis .env
 
@@ -17,37 +19,12 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
 }));
 
-
-// Middleware pour vérifier si l'utilisateur est authentifié
-function isAuthenticated(req, res, next) {
-  console.log("Vérification de la session - User:", req.session.user); // Debug
-  if (!req.session.user) {
-    return res.redirect('/login.html');
-  }
-  next();
-}
-
-// Middleware pour vérifier si l'utilisateur est admin
-function isAdmin(req, res, next) {
-  console.log("Vérification du rôle admin pour l'utilisateur:", req.session.user?.role); // Debug
-  if (req.session.user?.role !== 'admin') {
-    return res.status(403).send('Accès refusé, vous devez être un administrateur pour accéder à cette page.');
-  }
-  next();
-}
-
-// Middleware pour vérifier si l'utilisateur est un club
-function isClub(req, res, next) {
-  console.log("Vérification du rôle club pour l'utilisateur:", req.session.user?.role); // Debug
-  if (req.session.user?.role !== 'club') {
-    return res.status(403).send('Accès club requis.');
-  }
-  next();
-}
-
+const calendarRoutes = require('./calendarRoutes'); // Pour récupérer toutes les routes du calendrier
+app.use('/', calendarRoutes); 
 
   
 app.get('/ajouter-club', isAuthenticated, isAdmin, (req, res) => {
@@ -104,7 +81,11 @@ app.post('/login', (req, res) => {
 
       if (isMatch) {
         req.session.user = user;  // Stocke l'utilisateur dans la session
+        req.session.club_id = user.id; // Associe l'ID du club dans la session
+
+        // Rediriger selon le rôle de l'utilisateur
         if (user.role === 'admin') {
+          
           return res.redirect('/bde-dashboard.html');
         } else if (user.role === 'club') {
           return res.redirect('/club-dashboard.html');
@@ -116,14 +97,13 @@ app.post('/login', (req, res) => {
       }
     });
   });
-});
+});  
 
-  
-  
+
 
 app.post('/check-email', (req, res) => {
   const { email } = req.body;
-  console.log('[DEBUG] Email reçu :', email); // 🔍 Affiche l’email
+  console.log('[DEBUG] Email reçu :', email); // Affiche l’email
 
   const query = 'SELECT * FROM users WHERE email = ?';
   db.query(query, [email], (err, results) => {
@@ -136,7 +116,7 @@ app.post('/check-email', (req, res) => {
 
     if (results.length === 0) {
       console.log('[DEBUG] Aucune correspondance, redirection vers calendrier');
-      return res.redirect('/calendar.html');
+      return res.redirect('/user-dashboard.html');
     }
 
     const user = results[0];

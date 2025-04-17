@@ -14,7 +14,7 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'projet_web_4a'
+  database: 'bdd_calendrier'
 });
 
 // Connexion à la base de données
