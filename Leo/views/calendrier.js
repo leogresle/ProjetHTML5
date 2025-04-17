@@ -15,13 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchEventsWithColors() {
     try {
       const response = await fetch('/api/events-with-colors');
-      if (!response.ok) throw new Error('Erreur lors du chargement des événements');
-      return await response.json();
+      if (!response.ok) {
+        // Affiche la réponse de l'API dans la console si elle est incorrecte
+        const errorData = await response.json();
+        console.error('Erreur lors du chargement des événements:', errorData);
+        throw new Error('Erreur lors du chargement des événements');
+      }
+      const events = await response.json();
+      return events;
     } catch (error) {
-      console.error(error);
-      return [];
+      console.error('Erreur lors de la récupération des événements:', error);
+      return []; // Retourne un tableau vide si l'API échoue
     }
   }
+  
 
   async function fetchClubs() {
     try {

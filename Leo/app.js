@@ -42,76 +42,67 @@ app.get('/set-password/:userId', (req, res) => {
 });
 
 // Route pour changer le mot de passe du club
-app.post('/set-password/:userId', (req, res) => {
+app.post('/set-password/:userId', async (req, res) => {
   const { password } = req.body;
   const userId = req.params.userId;
 
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) {
-      console.error('Erreur hachage :', err);
-      return res.status(500).send('Erreur hachage');
-    }
-
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
     const query = 'UPDATE users SET password = ? WHERE id = ?';
-    db.query(query, [hashedPassword, userId], (err, result) => {
-      if (err) {
-        console.error('Erreur update :', err);
-        return res.status(500).send('Erreur DB');
-      }
+    await db.query(query, [hashedPassword, userId]);
 
-      console.log(`[DEBUG] Mot de passe défini pour user ID ${userId}`);
-      res.send('Mot de passe enregistré ! Vous pouvez maintenant vous connecter.');
-    });
-  });
+    console.log(`[DEBUG] Mot de passe défini pour user ID ${userId}`);
+    res.send('Mot de passe enregistré ! Vous pouvez maintenant vous connecter.');
+  } catch (err) {
+    console.error('Erreur dans set-password :', err);
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 
 // Route pour la connexion (login)
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-    if (err) return res.status(500).send('Erreur serveur');
+  try {
+    const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+
     if (results.length === 0) return res.status(400).send('Utilisateur non trouvé');
 
     const user = results[0];
+    const isMatch = await bcrypt.compare(password, user.password);
 
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) return res.status(500).send('Erreur de mot de passe');
+    if (isMatch) {
+      req.session.user = user;
+      req.session.club_id = user.id;
 
-      if (isMatch) {
-        req.session.user = user;  // Stocke l'utilisateur dans la session
-        req.session.club_id = user.id; // Associe l'ID du club dans la session
-
-        // Rediriger selon le rôle de l'utilisateur
-        if (user.role === 'admin') {
-          
-          return res.redirect('/bde-dashboard.html');
-        } else if (user.role === 'club') {
-          return res.redirect('/club-dashboard.html');
-        } else {
-          return res.redirect('/user-dashboard.html');
-        }
+      if (user.role === 'admin') {
+        return res.redirect('/bde-dashboard.html');
+      } else if (user.role === 'club') {
+        return res.redirect('/club-dashboard.html');
       } else {
-        return res.status(400).send('Mot de passe incorrect');
+        return res.redirect('/user-dashboard.html');
       }
-    });
-  });
-});  
-
-
-
-app.post('/check-email', (req, res) => {
-  const { email } = req.body;
-  console.log('[DEBUG] Email reçu :', email); // Affiche l’email
-
-  const query = 'SELECT * FROM users WHERE email = ?';
-  db.query(query, [email], (err, results) => {
-    if (err) {
-      console.error('[DEBUG] Erreur BDD :', err);
-      return res.status(500).send('Erreur serveur');
+    } else {
+      return res.status(400).send('Mot de passe incorrect');
     }
 
+  } catch (err) {
+    console.error('[LOGIN] Erreur :', err);
+    return res.status(500).send('Erreur serveur');
+  }
+}); 
+
+
+
+app.post('/check-email', async (req, res) => {
+  const { email } = req.body;
+  console.log('[DEBUG] Email reçu :', email);
+
+  const query = 'SELECT * FROM users WHERE email = ?';
+
+  try {
+    const [results] = await db.query(query, [email]);
     console.log('[DEBUG] Résultats de la BDD :', results);
 
     if (results.length === 0) {
@@ -129,8 +120,13 @@ app.post('/check-email', (req, res) => {
 
     console.log('[DEBUG] Mot de passe existant, redirection vers login');
     return res.redirect('/login.html');
-  });
+
+  } catch (err) {
+    console.error('[DEBUG] Erreur BDD :', err);
+    return res.status(500).send('Erreur serveur');
+  }
 });
+
  
 
 app.get('/bde-dashboard.html', isAuthenticated, isAdmin, (req, res) => {
@@ -141,33 +137,29 @@ app.get('/ajouter-club.html', isAuthenticated, isAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'ajouter-club.html'));
 });
   
-app.post('/ajouter-club', isAuthenticated, isAdmin, (req, res) => {
-    const { email } = req.body;
-  
-    // Vérifie s'il existe déjà
-    const checkQuery = 'SELECT * FROM users WHERE email = ?';
-    db.query(checkQuery, [email], (err, results) => {
-      if (err) return res.status(500).send('Erreur BDD');
-  
-      if (results.length > 0) {
-        return res.send('Ce club existe déjà.');
-      }
-  
-      // Ajout du club avec password NULL
-      const insertQuery = 'INSERT INTO users (email, role) VALUES (?, "club")';
-      db.query(insertQuery, [email], (err, result) => {
-        if (err) return res.status(500).send('Erreur à l\'insertion');
-  
-        const id = result.insertId;
-        const link = `http://localhost:3000/set-password/${id}`;
-        const message = `Bienvenue ! Pour activer votre compte club, créez votre mot de passe ici : ${link}`;
-  
-        // Envoie du mail
-        sendEmail(email, 'Création de votre compte Club', message);
-  
-        res.send('Club ajouté et mail envoyé.');
-      });
-    });
+app.post('/ajouter-club', isAuthenticated, isAdmin, async (req, res) => {
+  const { email, name } = req.body;
+
+  try {
+    const [existingUsers] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+
+    if (existingUsers.length > 0) {
+      return res.send('Ce club existe déjà.');
+    }
+
+    const [insertResult] = await db.query('INSERT INTO users (email, name, role) VALUES (?, ?, "club")', [email, name]);
+
+    const id = insertResult.insertId;
+    const link = `http://localhost:3000/set-password/${id}`;
+    const message = `Bienvenue ! Pour activer votre compte club, créez votre mot de passe ici : ${link}`;
+
+    sendEmail(email, 'Création de votre compte Club', message);
+
+    res.send('Club ajouté et mail envoyé.');
+  } catch (err) {
+    console.error('[AJOUT CLUB] Erreur :', err);
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 app.get('/club-dashboard.html', isAuthenticated, isClub, (req, res) => {
@@ -178,11 +170,14 @@ app.get('/ajouter-evenement.html', isAuthenticated, isClub, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'ajouter-evenement.html'));
 });
   
-app.get('/api/clubs', (req, res) => {
-    db.query('SELECT email FROM users WHERE role = "club"', (err, results) => {
-      if (err) return res.status(500).json([]);
-      res.json(results);
-    });
+app.get('/api/clubs', async (req, res) => {
+  try {
+    const [results] = await db.query('SELECT email FROM users WHERE role = "club"');
+    res.json(results);
+  } catch (err) {
+    console.error('[API CLUBS] Erreur :', err);
+    res.status(500).json([]);
+  }
 });
   
 
