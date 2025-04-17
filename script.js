@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (calendrierLink) {
         calendrierLink.addEventListener('click', function (e) {
             e.preventDefault();  // Empêcher le comportement par défaut du lien
-            loadPage("calendrier");    // Charger le calendrier lorsqu'on clique
+            loadPage("calender");    // Charger le calendrier lorsqu'on clique
         });
     }
     if (editLink) {
