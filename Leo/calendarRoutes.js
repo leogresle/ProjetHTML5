@@ -70,21 +70,24 @@ router.post('/api/events', (req, res) => {
       res.status(201).send('Événement ajouté avec succès');
     });
   });
-  
 
-// Récupérer les événements du club connecté
-router.get('/api/events/mine', isAuthenticated, isAdminOrClub, (req, res) => {
-    const clubId = req.session.club_id;
-  
-    const query = 'SELECT * FROM events WHERE club_id = ? ORDER BY date';
-    db.query(query, [clubId], (err, results) => {
-      if (err) {
-        console.error('[ERROR] Erreur lors de la récupération des événements :', err);
-        return res.status(500).json({ error: 'Erreur serveur' });
-      }
-      res.json(results);
-    });
-  });
+
+router.get('/api/my-events', async (req, res) => {
+  const clubName = req.session.club_id;
+
+  if (!clubName) {
+    return res.status(401).json({ error: "Utilisateur non connecté ou club non défini." });
+  }
+
+  try {
+    const [events] = await db.query('SELECT * FROM events WHERE club = ?', [clubName]);
+    res.json(events);
+  } catch (err) {
+    console.error('Erreur lors de la récupération des événements du club connecté:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
   
   
 

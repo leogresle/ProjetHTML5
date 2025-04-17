@@ -5,46 +5,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const eventLocation = document.getElementById('event-location');
   const eventVisible = document.getElementById('event-visible');
   const addEventButton = document.getElementById('add-event');
-  const clubOptions = document.getElementById('club-options');
   const myEventsContainer = document.getElementById('my-events-container');
   const clubColorInput = document.getElementById('club-color');
   const saveColorButton = document.getElementById('save-color');
   const clubDescription = document.getElementById('club-description');
   const saveDescriptionButton = document.getElementById('save-description');
 
-  let selectedClub = '';
-
-  async function fetchClubs() {
+  async function fetchMyClubEvents() {
     try {
-      const response = await fetch('/api/clubs');
-      if (!response.ok) throw new Error('Erreur lors du chargement des clubs');
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  }
-
-  async function fetchMyEvents() {
-    try {
-      const response = await fetch('/api/events/mine'); // Route modifiée pour récupérer les événements associés à l'utilisateur connecté
-      if (!response.ok) throw new Error('Erreur lors du chargement des événements');
+      const response = await fetch('/api/my-events');
+      if (!response.ok) throw new Error('Erreur lors du chargement des événements du club connecté');
       const events = await response.json();
-      return events;
+      displayEvents(events);
     } catch (error) {
       console.error(error);
-      return [];
-    }
-  }
-
-  async function fetchEventsByClub(clubName) {
-    try {
-      const response = await fetch(`/api/events?club=${clubName}`);
-      if (!response.ok) throw new Error('Erreur lors du chargement des événements');
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return [];
+      alert("Impossible de charger les événements de votre club.");
     }
   }
 
@@ -68,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isVisible }),
       });
-      if (!response.ok) throw new Error('Erreur lors de la mise à jour de la visibilité de l\'événement');
+      if (!response.ok) throw new Error('Erreur lors de la mise à jour de la visibilité');
       return true;
     } catch (error) {
       console.error(error);
@@ -76,38 +51,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function generateClubOptions() {
-    const clubs = await fetchClubs();
-    clubOptions.innerHTML = '';
-
-    clubs.forEach(club => {
-      const option = document.createElement('div');
-      option.classList.add('club-option');
-      option.innerHTML = `
-        <input type="radio" id="club-${club.name}" name="club" value="${club.name}">
-        <label for="club-${club.name}">${club.name}</label>
-      `;
-      clubOptions.appendChild(option);
-
-      option.querySelector('input').addEventListener('change', async event => {
-        if (event.target.checked) {
-          selectedClub = club.name;
-          // Charger et afficher les événements du club sélectionné
-          const events = await fetchEventsByClub(selectedClub);
-          displayEvents(events);
-        }
+  async function saveClubDescription(description) {
+    try {
+      const response = await fetch('/api/club/description', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description }),
       });
-    });
+      if (!response.ok) throw new Error('Erreur lors de la mise à jour de la description');
+      alert('Description mise à jour avec succès !');
+    } catch (error) {
+      console.error(error);
+      alert('Erreur lors de la mise à jour de la description du club.');
+    }
+  }
+
+  async function saveClubColor(color) {
+    try {
+      const response = await fetch('/api/club/color', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ color }),
+      });
+      if (!response.ok) throw new Error('Erreur lors de la mise à jour de la couleur');
+      alert('Couleur mise à jour avec succès !');
+    } catch (error) {
+      console.error(error);
+      alert('Erreur lors de la mise à jour de la couleur du club.');
+    }
   }
 
   function displayEvents(events) {
-    // Trier les événements par date croissante
     events.sort((a, b) => new Date(a.date) - new Date(b.date));
-
     myEventsContainer.innerHTML = '';
 
     if (events.length === 0) {
-      myEventsContainer.innerHTML = '<p>Aucun événement trouvé pour ce club.</p>';
+      myEventsContainer.innerHTML = '<p>Aucun événement trouvé pour votre club.</p>';
       return;
     }
 
@@ -121,14 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>${event.description}</p>
         <div class="event-actions">
           <button class="delete-button" data-event-id="${event.id}">Supprimer</button>
-          <button class="toggle-visibility-button ${event.is_visible ? 'show' : 'hide'}" data-event-id="${event.id}">${event.is_visible ? 'Cacher' : 'Afficher'}</button>
+          <button class="toggle-visibility-button ${event.is_visible ? 'show' : 'hide'}" data-event-id="${event.id}">
+            ${event.is_visible ? 'Cacher' : 'Afficher'}
+          </button>
         </div>
         <div class="like-count">Likes: <span class="like-number">${event.likes || 0}</span></div>
       `;
       myEventsContainer.appendChild(eventDiv);
     });
 
-    // Ajouter des gestionnaires d'événements pour les boutons de suppression et de visibilité
     document.querySelectorAll('.delete-button').forEach(button => {
       button.addEventListener('click', async event => {
         const eventId = event.target.getAttribute('data-event-id');
@@ -137,9 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const success = await deleteEvent(eventId);
           if (success) {
             alert('Événement supprimé avec succès !');
-            // Recharger les événements après la suppression
-            const events = await fetchMyEvents();
-            displayEvents(events);
+            fetchMyClubEvents();
           } else {
             alert('Erreur lors de la suppression de l\'événement.');
           }
@@ -154,12 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const success = await updateEventVisibility(eventId, isVisible);
         if (success) {
           alert('Visibilité de l\'événement mise à jour avec succès !');
-          // Mettre à jour le texte et la classe du bouton
-          event.target.textContent = isVisible ? 'Cacher' : 'Afficher';
-          event.target.classList.toggle('show', isVisible);
-          event.target.classList.toggle('hide', !isVisible);
+          fetchMyClubEvents();
         } else {
-          alert('Erreur lors de la mise à jour de la visibilité de l\'événement.');
+          alert('Erreur lors de la mise à jour de la visibilité.');
         }
       });
     });
@@ -172,38 +147,35 @@ document.addEventListener('DOMContentLoaded', () => {
       const datetime = eventDatetime.value;
       const location = eventLocation.value.trim();
       const isVisible = eventVisible.checked;
-      
+
       if (title && description && datetime && location) {
-        const newEvent = { 
-          title, 
-          description, 
-          datetime, 
-          location, 
-          is_visible: isVisible 
+        const newEvent = {
+          title,
+          description,
+          datetime,
+          location,
+          is_visible: isVisible
         };
-      
+
         try {
           const response = await fetch('/api/events', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newEvent)
           });
-      
-          if (!response.ok) {
-            throw new Error('Erreur lors de l\'ajout de l\'événement');
-          }
-      
+
+          if (!response.ok) throw new Error("Erreur lors de l'ajout de l'événement");
+
           alert('Événement ajouté !');
-      
-          // Réinitialiser les champs de texte après l'ajout réussi de l'événement
           eventTitle.value = '';
           eventDescription.value = '';
           eventDatetime.value = '';
           eventLocation.value = '';
           eventVisible.checked = true;
+          fetchMyClubEvents();
         } catch (error) {
           console.error(error);
-          alert('Impossible d\'ajouter l\'événement.');
+          alert("Impossible d'ajouter l'événement.");
         }
       } else {
         alert('Veuillez remplir tous les champs.');
@@ -211,13 +183,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialiser l'affichage des événements pour l'utilisateur sélectionné
-  async function initialize() {
-    const events = await fetchMyEvents();
-    displayEvents(events);
-  }
+  saveDescriptionButton.addEventListener('click', () => {
+    const description = clubDescription.value.trim();
+    if (description) {
+      saveClubDescription(description);
+    } else {
+      alert('Veuillez entrer une description.');
+    }
+  });
 
-  // Initialisation des options de club
-  generateClubOptions();
-  initialize(); // Charge et affiche les événements de l'utilisateur dès le début
+  saveColorButton.addEventListener('click', () => {
+    const color = clubColorInput.value.trim();
+    if (color) {
+      saveClubColor(color);
+    } else {
+      alert('Veuillez choisir une couleur.');
+    }
+  });
+
+  // Initial load
+  fetchMyClubEvents();
 });
