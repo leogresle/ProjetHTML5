@@ -11,10 +11,16 @@ const { isAuthenticated, isClub, isAdmin } = require('./middlewares/auth');
 
 dotenv.config();  // Charger les variables d'environnement depuis .env
 
+
 const app = express();
+
+const cors = require('cors');
+app.use(cors());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, '..', 'Charly', 'pages')));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -33,7 +39,7 @@ app.get('/ajouter-club', isAuthenticated, isAdmin, (req, res) => {
   
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'Charly', 'index.html'));
 });
   
 // Route pour afficher la page de définition du mot de passe

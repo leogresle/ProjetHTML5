@@ -1,0 +1,22 @@
+dépendance : 
+
+Express : pour gérer le serveur web. 
+MySQL2 : pour interagir avec la base de données MySQL.
+Bcryptjs : pour hacher les mots de passe (comme dans ton code PHP).
+Cors : gère les accès aux ressources depuis des origines différentes
+
+Pour les installer : npm install nom_du_module
+
+
+Pour demarrer le serveur : 
+
+1) démarrer Xampp puis start apache et mysql 
+2) Sur phpmyAdmin, créer une base de données nommé "bdd_calendrier" et importer le fichier database.sql du repository
+3) node app.js
+
+
+
+bde super admin 
+le club demande la creation d'un compte au super admin, le bde renseigne l'email et un mail est envoyé pour que le club définisse un mdp
+
+bouton connexion bde et bouton connexion pour les autres clubs

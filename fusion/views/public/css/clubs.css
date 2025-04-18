@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('../../assets/images/angers_fond.jpg');
+    background-size: cover; /* Étire l'image pour couvrir toute la page */
+    background-position: center; /* Centre l'image */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    background-attachment: fixed; /* Fixe l'image lors du défilement (optionnel) */
+    min-height: 100vh; /* Assure que le fond couvre toute la hauteur de la page */
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(31,44,108,.65); 
+  z-index: 1;
+}
+
+/* Contenu au-dessus de la superposition */
+body > * {
+  position: relative;
+  z-index: 2;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: #0606061d;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+
+/* Style pour le cercle de couleur */
+/*
+.color-circle {
+    width: 20px;        
+    height: 20px;        
+    border-radius: 50%;  
+    display: inline-block;
+    margin-right: 10px; 
+}
+*/
+#club-describ{
+    color: #fdcfe6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px; /* Ajustez selon la taille souhaitée */
+    width: 100%; /* Assure que la div prend toute la largeur */
+}
+
+/* Style pour la liste des clubs */
+#clubs-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Style pour chaque élément de club */
+.club-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    color: #000000; /* Transféré depuis li.color */
+    background-color: #f9f9f9ac;
+}
+
+/* Style pour le cercle de couleur */
+.color-circle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Style pour le conteneur de couleur */
+.color-container {
+    display: flex;
+    align-items: center;
+
+}
+
+/* Style pour le texte de la couleur */
+.club-color {
+    color: inherit; /* Utilise la couleur dynamique définie dans le JS */
+}
