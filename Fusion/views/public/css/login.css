@@ -1,0 +1,123 @@
+/* Global reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', 'Poppins', sans-serif;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    color: #333;
+    min-height: 100vh;
+  }
+  
+  /* Wrapper isolé */
+  .connexion-wrapper {
+    max-width: 420px;
+    margin: 100px auto 40px;
+    padding: 40px;
+    background: #43485c;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    position: relative;
+  }
+  
+  .connexion-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #00c9ff, #92fe9d);
+    z-index: -1;
+    filter: blur(20px);
+    opacity: 0.1;
+  }
+  
+  /* Titre */
+  .connexion-wrapper h1 {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: -8px;
+  }
+  
+  /* Formulaire */
+  .connexion-wrapper form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Ajoute de l'espace entre les inputs et le bouton */
+  }
+  
+  /* Inputs stylisés */
+  .connexion-wrapper input[type="email"],
+  .connexion-wrapper input[type="password"] {
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.25s ease-in-out;
+  }
+  
+  .connexion-wrapper input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+  }
+  
+  .connexion-wrapper input::placeholder {
+    color: #aaa;
+  }
+  
+  /* Bouton pro */
+  .connexion-wrapper button[type="submit"] {
+    padding: 14px;
+    background: #2e86de;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .connexion-wrapper button:hover {
+    background: #216ab3;
+    transform: scale(1.02);
+  }
+  
+  /* Lien mot de passe oublié */
+  .connexion-wrapper .forgot-password {
+    text-align: right;
+    font-size: 14px;
+    margin-top: -8px;
+  }
+  
+  .connexion-wrapper .forgot-password a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .connexion-wrapper .forgot-password a:hover {
+    color: #1d6fa5;
+  }
+  
+  /* Responsive */
+  @media (max-width: 480px) {
+    .connexion-wrapper {
+      margin: 80px 20px;
+      padding: 30px 20px;
+    }
+  
+    .connexion-wrapper h1 {
+      font-size: 24px;
+    }
+  }
+  

@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-  <title>Calendrier d'Événements</title>
+  <title>Connexion</title>
   
   <!-- Import du fichier CSS externe -->
-  <link rel="stylesheet" href="/public/css/calendar.css">
+  <link rel="stylesheet" href="/public/css/login.css">
 
   <!--bootstrap.min.css-->
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">	
@@ -81,45 +81,39 @@
 
   <div style="height: 100px;"></div>
 
-  <div class="containerM">
-    <!-- Filtre par Club -->
-    <div id="club-filter">
-      <h3>Filtrer par Club</h3>
-      <div id="filter-options">
-        <!-- Les options de filtre seront générées ici -->
+  <div class="connexion-wrapper">
+    <h1>Connexion</h1>
+    <form action="/login" method="POST">
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Mot de passe" required />
+      <div class="forgot-password">
+        <a href="#">Mot de passe oublié ?</a>
       </div>
-    </div>
-    <!-- Conteneur du calendrier -->
-    <div id="calendar-containerM">
-      <!-- En-tête du calendrier -->
-      <div id="calendar-header">
-        <button id="prev-month">Mois Précédent</button>
-        <h2 id="month-year">Mois et Année</h2>
-        <button id="next-month">Mois Suivant</button>
-      </div>
-      <!-- Conteneur du calendrier -->
-      <div id="calendar">
-        <!-- Les en-têtes et jours seront générés par JS -->
-      </div>
-      <!-- Modal Structure -->
-      <div id="eventModal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2 id="eventTitle"></h2>
-          <p><strong>Club:</strong> <span id="eventClub"></span></p>
-          <p><strong>Date:</strong> <span id="eventDate"></span></p>
-          <p><strong>Heure:</strong> <span id="eventTime"></span></p>
-          <p><strong>Lieu:</strong> <span id="eventLocation"></span></p>
-          <p><strong>Description:</strong> <span id="eventDescription"></span></p>
-          <button id="addToGoogleCalendar">Ajouter à Google Agenda</button>
-          <div class="like-containerM">
-            <button id="likeButton" class="like-button">Like</button>
-          </div>
-        </div>
-      </div>
-      <!-- Import du fichier JS externe -->
-      <script src="calendrier.js"></script>
-    </div>
+      <button type="submit">Se connecter</button>
+    </form>
   </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const result = await response.text();
+      alert(result);
+
+      if (response.redirected) {
+        window.location.href = response.url;
+      }
+    });
+  </script>
 </body>
 </html>
