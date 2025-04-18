@@ -3,25 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard BDE</title>
+  <link rel="stylesheet" href="/public/css/Dashboard.css">
 </head>
 <body>
   <h1>Bienvenue dans le Dashboard du BDE</h1>
   <br>
-  <h2>Espace BDE</h2>
+  <div class="container">
+    <h2>Espace BDE</h2>
 
-  <nav>
-    <ul>
-      <li><a href="/clubs.html">📋 Liste des clubs</a></li>
-      <li><a href="/calendar.html">📅 Calendrier des événements</a></li>
-      <li><a href="/ajouter-club.html">➕ Ajouter un club</a></li>
-      <li><a href="/Edit.html">Ajouter ou modifier un évènement</a></li>
-    </ul>
-  </nav>
+    <nav>
+      <ul>
+        <li><a href="/clubs.html">📋 Liste des clubs</a></li>
+        <li><a href="/calendar.html">📅 Calendrier des événements</a></li>
+        <li><a href="/ajouter-club.html">➕ Ajouter un club</a></li>
+        <li><a href="/Edit.html">Ajouter ou modifier un évènement</a></li>
+      </ul>
+    </nav>
 
-  <br>
+    <br>
 
-  <form action="/logout" method="GET">
-    <button type="submit">Se déconnecter</button>
-  </form>
+    <form action="/logout" method="GET">
+      <button class="btn" type="submit">Se déconnecter</button>
+    </form>
+  </div>
+
+  <script src="dashbord.js"></script>
 </body>
 </html>
