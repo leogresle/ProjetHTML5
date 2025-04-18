@@ -11,7 +11,7 @@ Pour les installer : npm install nom_du_module
 Pour demarrer le serveur : 
 
 1) démarrer Xampp puis start apache et mysql 
-2) Sur phpmyAdmin, créer une base de données nommé "database" et importer le fichier database.sql du repository
+2) Sur phpmyAdmin, créer une base de données nommé "bdd_calendrier" et importer le fichier database.sql du repository
 3) npm install express mysql2 bcryptjs jsonwebtoken cors body-parser nodemailer
 4) node app.js
 
