@@ -100,7 +100,7 @@ async function fetchMyClubEvents() {
 }
 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const eventTitle = document.getElementById('event-title');
   const eventDescription = document.getElementById('event-description');
   const eventDatetime = document.getElementById('event-datetime');
@@ -112,18 +112,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const clubDescription = document.getElementById('club-description');
   const saveDescriptionButton = document.getElementById('save-description');
 
-  async function updateEventVisibility(eventId, isVisible) {
+  async function fetchClubData() {
     try {
-      const response = await fetch(`/api/events/${eventId}/visibility`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isVisible }),
-      });
-      if (!response.ok) throw new Error('Erreur lors de la mise à jour de la visibilité');
-      return true;
+      const response = await fetch('/api/club/me');
+      if (!response.ok) throw new Error('Erreur lors de la récupération des données du club');
+      const clubData = await response.json();
+
+      // Mettre à jour les champs de description et de couleur
+      clubDescription.value = clubData.description || '';
+      clubColorInput.value = clubData.color || '#ffffff';
     } catch (error) {
-      console.error(error);
-      return false;
+      console.error('Erreur lors de la récupération des données du club:', error);
     }
   }
 
@@ -219,5 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Initial load
+  fetchClubData();
   fetchMyClubEvents();
 });

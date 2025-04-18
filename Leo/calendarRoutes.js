@@ -193,15 +193,16 @@ router.post('/api/events/:id/unlike', isAuthenticated, async (req, res) => {
   }
 });
 
+// Récupère les données du club connecté
 router.get('/api/club/me', isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
   try {
-    const [rows] = await db.query('SELECT name FROM users WHERE id = ?', [userId]);
+    const [rows] = await db.query('SELECT name, description, color FROM users WHERE id = ?', [userId]);
     if (rows.length === 0) return res.status(404).json({ error: 'Club non trouvé' });
     res.json(rows[0]);
   } catch (err) {
-    console.error('[GET CLUB NAME] Erreur :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error('[GET CLUB DATA] Erreur :', err);
+    res.status(500).json({ error: 'Erreur serveur.' });
   }
 });
 
