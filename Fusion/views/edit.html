@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Ajouter un Événement</title>
+  <link rel="shortcut icon" type="image/icon" href="assets/logo/p_transparent.png"/>
+
+  <!--bootstrap.min.css-->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">	
+  
+  <link rel="stylesheet" href="assets/css/flaticon.css">
+  
+  
+  <!--animate.css-->
+  <link rel="stylesheet" href="assets/css/animate.css">
+  
+  
+  <!--owl.carousel.css-->
+  <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+  
+  <!--bootstrap.min.css-->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  
+  
+  <!--font-awesome.min.css-->
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  
+  
+  <!-- bootsnav -->
+  <link rel="stylesheet" href="assets/css/bootsnav.css" >	
+  
+  <!--style.css-->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <link rel="stylesheet" href="/public/css/edit.css">
+
+		<script src="../script.js"></script>
+
+</head>
+<body>
+
+  	<!-- top-area Start -->
+    <header class="top-area">
+      <div class="header-area">
+          <!-- Start Navigation -->
+          <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
+
+              <div class="container">
+
+                  <!-- Start Header Navigation -->
+                  <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                  <i class="fa fa-bars"></i>
+              </button>
+              <a class="navbar-brand" href="http://localhost:3000/login.html">CONNEXION</a>
+          </div><!--/.navbar-header-->
+
+                  <!-- End Header Navigation -->
+
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                      <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                          <li class=" smooth-menu active"></li>
+                          <li class="smooth-menu"><a href="http://localhost:3000/index.html">Accueil</a></li>
+              <li class="smooth-menu"><a href="http://localhost:3000/calendar.html">Calendrier</a></li>
+              <li class="smooth-menu"><a href="http://localhost:3000/edit.html">Edit</a></li>
+              <li class="smooth-menu"><a href="http://localhost:3000/clubs.html">Clubs</a></li>
+              <li class="smooth-menu"><a href="http://localhost:3000/news.html">News</a></li>
+                      </ul><!--/.nav -->
+                  </div><!-- /.navbar-collapse -->
+              </div><!--/.container-->
+          </nav><!--/nav-->
+          <!-- End Navigation -->
+      </div><!--/.header-area-->
+
+      <div class="clearfix"></div>
+  </header><!-- /.top-area-->
+
+  <div style="height: 100px;"></div>
+
+  <div class="containerM">
+
+    <!-- Ajout d'événement ici -->
+    <div id="event-form-containerM">
+      <h3>Ajouter un Événement</h3>
+      <input type="text" id="event-title" placeholder="Titre de l'événement" required>
+      <textarea id="event-description" placeholder="Description" required></textarea>
+      <input type="datetime-local" id="event-datetime" required>
+      <input type="text" id="event-location" placeholder="Lieu de l'événement" required>
+      <div class="checkbox-containerM">
+        <input type="checkbox" id="event-visible">
+        <label for="event-visible">
+          <span class="custom-checkbox"></span>
+          Visible dans le calendrier
+        </label>
+      </div>
+      <button id="add-event">Ajouter l'événement</button>
+    </div>
+
+    <!-- Section de personnalisation du club -->
+    <div id="customization-containerM">
+      <h3>Personnalisation du Club</h3>
+      <label for="club-description">Description du Club :</label>
+      <textarea id="club-description" rows="4" cols="50"></textarea>
+      <button id="save-description">Enregistrer la Description</button>
+    
+      <div class="color-picker-containerM">
+        <label for="club-color">Couleur du Club :</label>
+        <div class="color-input-containerM">
+          <input type="color" id="club-color" name="club-color" value="#ffffff">
+          <span class="color-advice">Nous vous conseillons de prendre une couleur claire pour que la description de votre événement soit visible.</span>
+        </div>
+      </div>
+      <button id="save-color">Enregistrer la Couleur</button>
+    </div>
+    
+    
+    
+
+    <!-- Section Mes événements -->
+    <div id="event-describ">
+      <h2>Mes événements :</h2>
+    </div>
+    <div id="my-events-containerM">
+      <!-- Les événements seront affichés ici -->
+    </div>
+  </div>
+  <script src="edit_Calendrier.js"></script>
+</body>
+</html>

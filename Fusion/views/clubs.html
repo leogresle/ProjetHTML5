@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Liste des Clubs</title>
+
+    <link rel="shortcut icon" type="image/icon" href="assets/logo/p_transparent.png"/>
+    
+    <!-- Import du fichier CSS externe -->
+    <link rel="stylesheet" href="/public/css/clubs.css">
+
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">	
+
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+
+
+    <!--animate.css-->
+    <link rel="stylesheet" href="assets/css/animate.css">
+
+    
+    <!--owl.carousel.css-->
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
+    
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    
+	<!--font-awesome.min.css-->
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+
+    <!-- bootsnav -->
+    <link rel="stylesheet" href="assets/css/bootsnav.css" >	
+
+    <!--style.css-->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- top-area Start -->
+    <header class="top-area">
+        <div class="header-area">
+            <!-- Start Navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
+  
+                <div class="container">
+  
+                    <!-- Start Header Navigation -->
+                    <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="http://localhost:3000/login.html">CONNEXION</a>
+            </div><!--/.navbar-header-->
+  
+                    <!-- End Header Navigation -->
+  
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                            <li class=" smooth-menu active"></li>
+                            <li class="smooth-menu"><a href="http://localhost:3000/index.html">Accueil</a></li>
+                <li class="smooth-menu"><a href="http://localhost:3000/calendar.html">Calendrier</a></li>
+                <li class="smooth-menu"><a href="http://localhost:3000/edit.html">Edit</a></li>
+                <li class="smooth-menu"><a href="http://localhost:3000/clubs.html">Clubs</a></li>
+                <li class="smooth-menu"><a href="http://localhost:3000/news.html">News</a></li>
+                        </ul><!--/.nav -->
+                    </div><!-- /.navbar-collapse -->
+                </div><!--/.container-->
+            </nav><!--/nav-->
+            <!-- End Navigation -->
+        </div><!--/.header-area-->
+  
+        <div class="clearfix"></div>
+    </header><!-- /.top-area-->
+  
+    <div style="height: 100px;"></div>
+
+    <div id="club-describ">
+        <h1>Liste des Clubs</h1>
+    </div>
+
+    <div class="containerM">
+        <div id="clubs-list">
+        <!-- La liste des clubs sera affichée ici -->
+        </div>
+    </div>
+
+    <script src="clubs_list.js"></script>
+
+</body>
+</html>
