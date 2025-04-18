@@ -1,0 +1,132 @@
+/* Style pour le conteneur des suggestions */
+.forum-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Style pour chaque suggestion de club */
+.forum-post {
+    border: 2px solid #ef8397; /* Bordure avec couleur harmonieuse */
+    background-color: #fff; /* Fond blanc */
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px; /* Coins arrondis */
+    transition: transform 0.3s ease; /* Transition pour effet de survol */
+}
+
+/* Effet de survol pour chaque suggestion */
+.forum-post:hover {
+    transform: translateY(-5px); /* Décalage vers le haut au survol */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Ombre légère au survol */
+}
+
+/* Style pour l'en-tête de chaque suggestion */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Espacement sous l'en-tête */
+}
+
+/* Style pour l'email de l'auteur */
+.author {
+    font-weight: bold;
+    color: #3c4258; /* Couleur de texte harmonieuse */
+}
+
+/* Style pour le nom du club (sujet) */
+.club-name {
+    font-style: italic;
+    color: #636a82; /* Couleur de texte harmonieuse */
+}
+
+/* Style pour le contenu de chaque suggestion */
+.post-content {
+    color: #43485c; /* Couleur de texte harmonieuse */
+    line-height: 1.6; /* Espacement des lignes */
+}
+
+/* Style pour les titres */
+.forum-title {
+    text-align: center;
+    color: #ef8397; /* Couleur du titre */
+    margin-bottom: 20px; /* Espacement sous le titre */
+}
+
+/* Style pour la saisie des suggestions */
+.suggestion-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ef8397; /* Bordure avec couleur harmonieuse */
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 16px;
+    box-sizing: border-box; /* Taille incluant la bordure */
+}
+
+/* Style pour le bouton de soumission */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #ef8397; /* Couleur de fond du bouton */
+    color: #fff; /* Couleur du texte */
+    border: none;
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transition pour l'effet au survol */
+}
+
+/* Effet de survol pour le bouton de soumission */
+.submit-button:hover {
+    background-color: #9f00ff; /* Nouvelle couleur de fond au survol */
+}
+
+.return-button {
+
+    position: fixed; /* Position fixe pour rester en haut même en faisant défiler la page */
+    top: 10px;
+    right: 10px;
+    z-index: 999; /* Assure que le bouton est au-dessus de tout autre contenu */
+    
+    padding: 10px 20px;
+    background-color: #9f00ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+
+/* Bouton de retour au survol */
+.return-button:hover {
+    background-color: #740db4;
+}
+
+/* Style des likes */
+.likes-count {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.like-button {
+    padding: 5px 10px;
+    background-color: #ef8397;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.like-button:hover {
+    background-color: #b9727f;
+}
+
+.liked {
+    color: green;
+    font-weight: bold;
+}

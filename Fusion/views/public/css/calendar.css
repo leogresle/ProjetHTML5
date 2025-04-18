@@ -1,0 +1,319 @@
+/* Styles de base */
+body{
+	font-family: 'Poppins', sans-serif;
+	font-size:16px;
+	color: #ffffff;
+	background: #080710;
+    max-width:1920px;
+    margin:0 auto;
+	overflow-x:hidden;
+}
+
+.containerM {
+  display: flex; /* Utilisation de flexbox pour organiser le filtre et le calendrier */
+  max-width: 1200px; /* Augmenter la largeur maximale pour accueillir le filtre */
+  margin: auto;
+  background: rgba(34, 48, 114, 0.65);
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Filtre par Club */
+#club-filter {
+  width: 200px; /* Largeur fixe pour le filtre */
+  padding: 20px;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  max-height: 100vh; /* Permet de faire défiler si le contenu dépasse la hauteur de la fenêtre */
+}
+
+#calendar-containerM {
+  flex: 1; /* Permet au calendrier de prendre le reste de l'espace */
+  padding: 20px;
+}
+
+/* En-tête du calendrier avec flexbox */
+#calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#calendar-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+#prev-month, #next-month {
+  padding: 8px 12px;
+  font-size: 1em;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#prev-month {
+  background-color: #786e6e;
+}
+
+#next-month {
+  background-color: #786e6e;
+}
+
+/* Grille du calendrier */
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day, .day-header {
+  border: 1px solid #ddd;
+  padding: 10px;
+  min-height: 80px;
+  position: relative;
+  border-radius: 4px;
+  background: #d1a2a2;
+}
+
+.day-header {
+  background: #bd7272;
+  font-weight: bold;
+  text-align: center;
+}
+
+.day-number {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+/* Style de l'événement */
+.event {
+  background: #ffe6f2;
+  padding: 4px;
+  margin-top: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulaire d'ajout d'événement */
+#event-form {
+  display: none;
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+#event-form input, #event-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#event-form button {
+  padding: 10px 15px;
+  border: none;
+  background: #007BFF;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#event-form button#close-form {
+  background: #dc3545;
+  margin-left: 10px;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto; /* Centrage vertical et horizontal */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px; /* Limite la largeur maximale */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+}
+
+/* Style pour le contenu de l'événement */
+.modal-content h2 {
+  font-size: 22px;
+  color: #333;
+  margin-top: 0;
+}
+
+.modal-content p {
+  font-size: 16px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.modal-content p strong {
+  color: #333;
+}
+  
+
+/* Style pour les options de filtre */
+#filter-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 0; /* Ajoute un peu de padding pour l'espacement */
+  border-bottom: 1px solid #ccc; /* Ajoute une barre de séparation */
+}
+
+.filter-option:last-child {
+  border-bottom: none; /* Supprime la barre de séparation du dernier élément */
+}
+
+.filter-option input[type="checkbox"] {
+  margin-right: 8px; /* Ajoute de l'espace entre la case à cocher et le texte */
+  width: 18px;
+  height: 18px;
+  accent-color: #007BFF; /* Change la couleur de la case à cocher */
+  cursor: pointer;
+}
+
+.filter-option label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.filter-option input[type="checkbox"]:checked {
+  background-color: #007BFF; /* Change la couleur de fond lorsque la case est cochée */
+}
+
+#club-selection {
+  margin-bottom: 20px;
+}
+
+#club-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.club-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.club-option input[type="radio"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.club-option label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Style pour le bouton "Ajouter à Google Agenda" */
+#addToGoogleCalendar {
+  background-color: #4285F4; /* Couleur bleue de Google */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+#addToGoogleCalendar:hover {
+  background-color: #357ae8; /* Couleur bleue plus foncée au survol */
+}
+
+/* containerM pour le bouton Like */
+.like-containerM {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+/* Style pour le bouton Like/Unlike */
+.like-button {
+  background-color: #3498db; /* Couleur bleue par défaut pour Like */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+/* Effet de survol */
+.like-button:hover {
+  background-color: #2980b9; /* Couleur bleue plus foncée au survol */
+}
+
+/* Effet de clic */
+.like-button:active {
+  transform: scale(0.95); /* Réduit légèrement la taille du bouton lors du clic */
+}
+
+/* Style pour le bouton lorsqu'il est désactivé (après un like/unlike) */
+.like-button:disabled {
+  background-color: #95a5a6; /* Couleur grise pour indiquer qu'il est désactivé */
+  cursor: not-allowed;
+}
+
+/* Style pour le bouton en mode Unlike */
+.like-button.unliked {
+  background-color: #e74c3c; /* Couleur rouge pour Unlike */
+}
+
+.like-button.unliked:hover {
+  background-color: #c0392b; /* Couleur rouge plus foncée au survol */
+}
