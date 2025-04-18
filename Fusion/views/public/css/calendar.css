@@ -24,8 +24,15 @@ body{
   width: 200px; /* Largeur fixe pour le filtre */
   padding: 20px;
   border-right: 1px solid #ccc;
+  color: white;
   overflow-y: auto;
   max-height: 100vh; /* Permet de faire défiler si le contenu dépasse la hauteur de la fenêtre */
+}
+
+#club-filter h3 {
+  margin: 0;
+  font-size: 1em;
+  color: white;
 }
 
 #calendar-containerM {
@@ -44,6 +51,7 @@ body{
 #calendar-header h2 {
   margin: 0;
   font-size: 1.5em;
+  color: white;
 }
 
 #prev-month, #next-month {
@@ -84,6 +92,7 @@ body{
   background: #bd7272;
   font-weight: bold;
   text-align: center;
+  color: white;
 }
 
 .day-number {
@@ -220,8 +229,8 @@ body{
 
 .filter-option label {
   font-size: 14px;
-  color: #333;
   cursor: pointer;
+  color: rgb(243, 236, 236);
 }
 
 .filter-option input[type="checkbox"]:checked {
