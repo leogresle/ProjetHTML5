@@ -1,4 +1,0 @@
-Lancer Xampp
-Ajouter la base de donnee
-npm install
-npm start
