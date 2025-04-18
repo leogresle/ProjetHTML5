@@ -206,4 +206,19 @@ router.get('/api/club/me', isAuthenticated, async (req, res) => {
 });
 
 
+// Route pour récupérer la description et la couleur du club actuellement connecté
+router.get('/api/club/profile', isAuthenticated, async (req, res) => {
+  const userId = req.session.user.id;
+  try {
+    const [rows] = await db.query('SELECT name, description, color FROM users WHERE id = ?', [userId]);
+    if (rows.length === 0) return res.status(404).json({ error: 'Club non trouvé' });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('[GET CLUB PROFILE] Erreur :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+
+
 module.exports = router;

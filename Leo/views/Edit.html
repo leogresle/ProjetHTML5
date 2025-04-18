@@ -53,5 +53,24 @@
   </div>
 
   <script src="edit_Calendrier.js"></script>
+
+  <!-- Script pour avoir la couleur et la description actuelles du club connecté -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('/api/club/profile')
+        .then(response => {
+          if (!response.ok) throw new Error('Erreur lors du chargement des infos du club');
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('club-description').value = data.description || '';
+          document.getElementById('club-color').value = data.color || '#ffffff';
+        })
+        .catch(error => {
+          console.error('Erreur de chargement des infos du club :', error);
+        });
+    });
+    </script>
+    
 </body>
 </html>
