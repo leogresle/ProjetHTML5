@@ -4,17 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Clubs</title>
-    
-    <style>
-        /* Style pour le cercle de couleur */
-        .color-circle {
-            width: 20px;         /* Largeur du cercle */
-            height: 20px;        /* Hauteur du cercle */
-            border-radius: 50%;  /* Forme ronde */
-            display: inline-block;
-            margin-right: 10px;  /* Espacement entre le cercle et le texte */
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -23,6 +13,8 @@
 <div id="clubs-list">
     <!-- La liste des clubs sera affichée ici -->
 </div>
+
+<a href="/user-dashboard.html">Retour au dashboard</a>
 
 <script>
 // Fonction pour récupérer la liste des clubs
@@ -49,36 +41,44 @@ function displayClubs(clubs) {
     }
 
     // Créer une liste d'éléments pour chaque club
-    const ul = document.createElement('ul');
     clubs.forEach(club => {
-        const li = document.createElement('li');
-        li.style.border = '1px solid #ccc';
-        li.style.padding = '10px';
-        li.style.marginBottom = '10px';
+        const clubDiv = document.createElement('div');
+        clubDiv.classList.add('club-item');
 
-        // Créer un élément span pour afficher la couleur sous forme de cercle
+        // Section pour le nom du club
+        const nameSection = document.createElement('div');
+        nameSection.classList.add('club-name');
+        nameSection.innerHTML = `<strong>${club.name}</strong>`;
+
+        // Section pour la description du club
+        const descriptionSection = document.createElement('div');
+        descriptionSection.classList.add('club-description');
+        descriptionSection.innerHTML = `<span>${club.description}</span>`;
+
+        // Section pour la couleur du club
+        const colorSection = document.createElement('div');
+        colorSection.classList.add('club-color');
         const colorCircle = document.createElement('span');
         colorCircle.classList.add('color-circle');
         colorCircle.style.backgroundColor = club.color;  // Appliquer la couleur du club au cercle
-
-        li.innerHTML = `
-            <strong>${club.name}</strong><br>
-            <span>${club.description}</span><br>
-            <div style="display: flex; align-items: center;">
+        colorSection.innerHTML = `
+            <div class="color-display">
                 ${colorCircle.outerHTML}
-                <span style="color:${club.color}">${club.color}</span>
+                <span class="color-text" style="color:${club.color}">${club.color}</span>
             </div>
         `;
 
-        ul.appendChild(li);
-    });
+        // Ajouter les sections au clubDiv
+        clubDiv.appendChild(nameSection);
+        clubDiv.appendChild(descriptionSection);
+        clubDiv.appendChild(colorSection);
 
-    clubsListDiv.appendChild(ul);
+        clubsListDiv.appendChild(clubDiv);
+    });
 }
 
 // Appel de la fonction pour récupérer et afficher les clubs
 fetchClubs();
 </script>
-<a href="/user-dashboard.html">Retour au dashboard</a>
 </body>
 </html>

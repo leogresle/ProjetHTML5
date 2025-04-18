@@ -1,0 +1,85 @@
+/* Style général */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1 {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+#clubs-list {
+    padding: 20px;
+}
+
+.club-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.club-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.club-name {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.club-description {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.club-color {
+    display: flex;
+    align-items: center;
+}
+
+/* Style pour le cercle de couleur */
+.color-circle {
+    width: 20px;         /* Largeur du cercle */
+    height: 20px;        /* Hauteur du cercle */
+    border-radius: 50%;  /* Forme ronde */
+    display: inline-block;
+    margin-right: 10px;  /* Espacement entre le cercle et le texte */
+    border: 2px solid #fff; /* Bordure blanche pour mieux définir le cercle */
+}
+
+.color-display {
+    display: flex;
+    align-items: center;
+}
+
+.color-text {
+    font-weight: bold;
+    margin-left: 5px; /* Espacement entre le cercle et le texte de la couleur */
+}
+
+a {
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    background-color: #ddd;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+a:hover {
+    background-color: #ccc;
+}
