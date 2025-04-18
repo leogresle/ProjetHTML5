@@ -81,9 +81,9 @@ app.post('/login', async (req, res) => {
       req.session.club_id = user.id;
 
       if (user.role === 'admin') {
-        return res.redirect('/bde-dashboard.html');
+        return res.redirect('/edit-bde.html');
       } else if (user.role === 'club') {
-        return res.redirect('/club-dashboard.html');
+        return res.redirect('/edit.html');
       } else {
         return res.redirect('/user-dashboard.html');
       }
