@@ -1,0 +1,58 @@
+<!-- fichier pour code maxime -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendrier d'Événements</title>
+  <!-- Import du fichier CSS externe -->
+  <link rel="stylesheet" href="public/calendar.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Filtre par Club -->
+    <div id="club-filter">
+      <h3>Filtrer par Club</h3>
+      <div id="filter-options">
+        <!-- Les options de filtre seront générées ici -->
+      </div>
+    </div>
+
+    <!-- Conteneur du calendrier -->
+    <div id="calendar-container">
+      <!-- En-tête du calendrier -->
+      <div id="calendar-header">
+        <button id="prev-month">Mois Précédent</button>
+        <h2 id="month-year">Mois et Année</h2>
+        <button id="next-month">Mois Suivant</button>
+      </div>
+
+      <!-- Conteneur du calendrier -->
+      <div id="calendar">
+        <!-- Les en-têtes et jours seront générés par JS -->
+      </div>
+
+      <!-- Modal Structure -->
+      <div id="eventModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 id="eventTitle"></h2>
+          <p><strong>Club:</strong> <span id="eventClub"></span></p>
+          <p><strong>Date:</strong> <span id="eventDate"></span></p>
+          <p><strong>Heure:</strong> <span id="eventTime"></span></p>
+          <p><strong>Lieu:</strong> <span id="eventLocation"></span></p>
+          <p><strong>Description:</strong> <span id="eventDescription"></span></p>
+          <button id="addToGoogleCalendar">Ajouter à Google Agenda</button>
+          <div class="like-container">
+            <button id="likeButton" class="like-button">Like</button>
+          </div>
+        </div>
+      </div>
+        
+      
+      <!-- Import du fichier JS externe -->
+      <script src="public/calendrier.js"></script>
+    </div>
+  </div>
+</body>
+</html>
