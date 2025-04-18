@@ -14,7 +14,7 @@ router.get('/edition', isAuthenticated, (req, res) => {
 });
 
 // Récupère tous les événements avec couleur de club
-router.get('/api/events-with-colors', isAuthenticated, async (req, res) => {
+router.get('/api/events-with-colors', async (req, res) => {
   const sql = `
     SELECT e.*, u.name AS club_name, u.color
     FROM events e
@@ -89,33 +89,46 @@ router.get('/api/my-events', async (req, res) => {
 
 
 // Supprimer un événement
-router.delete('/api/events/:id', isClub, async (req, res) => {
+router.delete('/api/events/:id', isAuthenticated, async (req, res) => {
   const eventId = req.params.id;
 
-  const sql = "DELETE FROM events WHERE id = ?";
   try {
-    await db.query(sql, [eventId]);
-    res.json({ message: "Événement supprimé avec succès !" });
+    const [result] = await db.query('DELETE FROM events WHERE id = ?', [eventId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Événement non trouvé' });
+    }
+
+    res.status(200).json({ message: 'Événement supprimé avec succès' });
   } catch (err) {
-    console.error('Erreur dans la suppression de l\'événement:', err);
-    res.status(500).json({ error: "Erreur serveur." });
+    console.error('[DELETE EVENT] Erreur :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
+
 // Modifier la visibilité
-router.put('/api/events/:id/visibility', isClub, async (req, res) => {
+router.put('/api/events/:id/visibility', isAuthenticated, async (req, res) => {
   const eventId = req.params.id;
   const { isVisible } = req.body;
 
-  const sql = "UPDATE events SET is_visible = ? WHERE id = ?";
   try {
-    await db.query(sql, [isVisible, eventId]);
-    res.json({ message: "Visibilité mise à jour avec succès !" });
+    const [result] = await db.query(
+      'UPDATE events SET is_visible = ? WHERE id = ?',
+      [isVisible ? 1 : 0, eventId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Événement non trouvé' });
+    }
+
+    res.json({ message: 'Visibilité mise à jour avec succès' });
   } catch (err) {
-    console.error('Erreur dans la mise à jour de la visibilité:', err);
-    res.status(500).json({ error: "Erreur serveur." });
+    console.error('[UPDATE VISIBILITY] Erreur :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 });
+
 
 // Modifier description club
 router.put('/api/club/description', isAuthenticated, async (req, res) => {
@@ -179,5 +192,18 @@ router.post('/api/events/:id/unlike', isAuthenticated, async (req, res) => {
     res.status(500).json({ error: "Erreur serveur." });
   }
 });
+
+router.get('/api/club/me', isAuthenticated, async (req, res) => {
+  const userId = req.session.user.id;
+  try {
+    const [rows] = await db.query('SELECT name FROM users WHERE id = ?', [userId]);
+    if (rows.length === 0) return res.status(404).json({ error: 'Club non trouvé' });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('[GET CLUB NAME] Erreur :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 
 module.exports = router;

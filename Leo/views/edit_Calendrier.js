@@ -1,5 +1,33 @@
 const myEventsContainer = document.getElementById('my-events-container');
 
+async function deleteEvent(eventId) {
+  try {
+    const response = await fetch(`/api/events/${eventId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error('Erreur lors de la suppression de l\'événement');
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+async function updateEventVisibility(eventId, isVisible) {
+  try {
+    const response = await fetch(`/api/events/${eventId}/visibility`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ isVisible }),
+    });
+    if (!response.ok) throw new Error('Erreur lors de la mise à jour de la visibilité');
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
 function displayEvents(events) {
   events.sort((a, b) => new Date(a.date) - new Date(b.date));
   myEventsContainer.innerHTML = '';
@@ -83,21 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveColorButton = document.getElementById('save-color');
   const clubDescription = document.getElementById('club-description');
   const saveDescriptionButton = document.getElementById('save-description');
-
-  
-
-  async function deleteEvent(eventId) {
-    try {
-      const response = await fetch(`/api/events/${eventId}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Erreur lors de la suppression de l\'événement');
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  }
 
   async function updateEventVisibility(eventId, isVisible) {
     try {
