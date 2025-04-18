@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard Utilisateur</title>
+  <link rel="stylesheet" href="/public/css/Dashboard.css">
 </head>
 <body>
   <h1>Bienvenue sur le site de Polytech Angers</h1>
-
-  <nav>
-    <ul>
-      <li><a href="/calendar.html">📅 Voir le calendrier des événements</a></li>
-      <li><a href="/clubs.html">📋 Voir la liste des clubs</a></li>
-    </ul>
-  </nav>
-
   <br>
-  <div>
-    <button onclick="window.location.href='/login.html'">Se connecter</button>
+  <div class="container">
+    <h2>Espace Utilisateur</h2>
+
+    <nav>
+      <ul>
+        <li><a href="/calendar.html">📅 Voir le calendrier des événements</a></li>
+        <li><a href="/clubs.html">📋 Voir la liste des clubs</a></li>
+      </ul>
+    </nav>
+
+    <br>
+    <div>
+      <button class="btn" onclick="window.location.href='http://localhost:3000/login.html'">Se connecter</button>
+    </div>
+    <br>
   </div>
-  <br>
 
-  <form action="/logout" method="GET">
-    <button type="submit">Se déconnecter</button>
-  </form>
+  <script src="dashbord.js"></script>
 </body>
 </html>
