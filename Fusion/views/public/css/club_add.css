@@ -32,7 +32,7 @@ h1{
   text-align: center; /* Centre le texte horizontalement */
 }
 
-.container {
+.containerM {
   max-width: 800px;
   width: 100%; /* Assure que le conteneur prend toute la largeur disponible */
   margin: auto;
