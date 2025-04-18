@@ -7,7 +7,7 @@ CREATE TABLE users (
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) ,
   role ENUM('admin', 'club') NOT NULL DEFAULT 'club',
-  color VARCHAR(7) NOT NULL DEFAULT '#ffffff',,
+  color VARCHAR(7) NOT NULL DEFAULT '#ffffff',
   description TEXT
 );
 
