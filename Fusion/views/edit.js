@@ -1,4 +1,4 @@
-const myEventsContainer = document.getElementById('my-events-container');
+const myEventsContainer = document.getElementById('my-events-containerM');
 
 async function deleteEvent(eventId) {
   try {
