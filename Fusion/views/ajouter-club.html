@@ -51,7 +51,7 @@
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                   <i class="fa fa-bars"></i>
               </button>
-              <a class="navbar-brand" href="http://localhost:3000/index.html">DECONNEXION</a>
+              <a class="navbar-brand" href="http://localhost:3000/index.html">DECONNEXION : <span id="club-name"></span></a>
           </div><!--/.navbar-header-->
 
                   <!-- End Header Navigation -->
@@ -90,5 +90,21 @@
       <button class="btn" type="submit">Ajouter le club</button>
     </form>
   </div>
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/club/me');
+        if (!response.ok) throw new Error('Erreur lors de la récupération des infos du club');
+  
+        const data = await response.json();
+        document.getElementById('club-name').innerText = data.name;
+      } catch (error) {
+        console.error(error);
+        document.getElementById('club-name').innerText = 'Club';
+      }
+    });
+  </script>
 </body>
 </html>
