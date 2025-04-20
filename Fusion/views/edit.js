@@ -47,9 +47,8 @@ function displayEvents(events) {
       <p>${event.description}</p>
       <div class="event-actions">
         <button class="delete-button" data-event-id="${event.id}">Supprimer</button>
-        <button class="toggle-visibility-button ${event.is_visible ? 'show' : 'hide'}" data-event-id="${event.id}">
-          ${event.is_visible ? 'Cacher' : 'Afficher'}
-        </button>
+        <button class="toggle-visibility-button hide-button" data-event-id="${event.id}" style="${event.is_visible ? '' : 'display:none'}">Cacher</button>
+        <button class="toggle-visibility-button show-button" data-event-id="${event.id}" style="${event.is_visible ? 'display:none' : ''}">Afficher</button>
       </div>
       <div class="like-count">Likes: <span class="like-number">${event.likes || 0}</span></div>
     `;
@@ -72,13 +71,25 @@ function displayEvents(events) {
     });
   });
 
-  document.querySelectorAll('.toggle-visibility-button').forEach(button => {
+  document.querySelectorAll('.hide-button').forEach(button => {
     button.addEventListener('click', async event => {
       const eventId = event.target.getAttribute('data-event-id');
-      const isVisible = !event.target.textContent.includes('Cacher');
-      const success = await updateEventVisibility(eventId, isVisible);
+      const success = await updateEventVisibility(eventId, false);
       if (success) {
-        alert('Visibilité de l\'événement mise à jour avec succès !');
+        alert('Événement caché avec succès !');
+        fetchMyClubEvents();
+      } else {
+        alert('Erreur lors de la mise à jour de la visibilité.');
+      }
+    });
+  });
+
+  document.querySelectorAll('.show-button').forEach(button => {
+    button.addEventListener('click', async event => {
+      const eventId = event.target.getAttribute('data-event-id');
+      const success = await updateEventVisibility(eventId, true);
+      if (success) {
+        alert('Événement rendu visible avec succès !');
         fetchMyClubEvents();
       } else {
         alert('Erreur lors de la mise à jour de la visibilité.');
@@ -98,7 +109,6 @@ async function fetchMyClubEvents() {
     alert('Impossible de charger les événements de votre club.');
   }
 }
-
 
 document.addEventListener('DOMContentLoaded', async () => {
   const eventTitle = document.getElementById('event-title');

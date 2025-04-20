@@ -412,13 +412,23 @@ body > * {
   color: white;
 }
 
-.toggle-visibility-button.show {
-  background-color: #4caf50;
+/* Bouton pour rendre visible (Afficher) */
+.toggle-visibility-button.show-button {
+  background-color: #4caf50; /* Vert doux */
   color: white;
 }
 
-.toggle-visibility-button.hide {
-  background-color: #ff9800;
+.toggle-visibility-button.show-button:hover {
+  background-color: #43a047; /* Vert plus foncé */
+}
+
+/* Bouton pour rendre invisible (Cacher) */
+.toggle-visibility-button.hide-button {
+  background-color: #ff9800; /* Orange doux */
   color: white;
+}
+
+.toggle-visibility-button.hide-button:hover {
+  background-color: #e68a00; /* Orange plus foncé */
 }
 
